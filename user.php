@@ -1,35 +1,16 @@
 <?php
-  include "DB/database.php";
-  if(isset($_POST['login'])){
-    $QueryCekUser="SELECT * FROM datauser WHERE Email=:email";
-    $stmt=$db->prepare($QueryCekUser);
-    $stmt->bindValue(':email',$_POST['email'],PDO::PARAM_STR);
-    $result=$stmt->execute();
-    $data=$stmt->fetch(PDO::FETCH_ASSOC);
-    if($data===false){
-      //login admin
-      if($_POST['email']=="admin@admin.com"){
-          header('Location: admin.php');
-          
-      }
-      else{
-       echo "<script>alert('Email Tidak Terdaftar!')</script>";
-      }
-      
+    session_start();
+    if(!isset($_SESSION['user'])){
+        header("Location: index.php");
     }
     else{
-        $password=$data['Password'];
-        $cekpass=password_verify($_POST['password'],$password);
-        if($cekpass){
-          session_start();
-          $_SESSION['user']=$data['Nama'];
-          header("Location: user.php");
-        }
-        else{
-          echo "<script>alert('Password Salah!')</script>";
-        }
+        $username = $_SESSION['user'];
     }
-  }
+
+    if(isset($_POST["logout"])){
+        unset($_SESSION['user']);
+        header("Location: index.php");
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -49,10 +30,10 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <form action="" method="post">
+
     <a href="index.php"> <h3 style="text-align:center; float:left; margin-left: 47%;">BioskopID</h3> </a>
-    <a href="Register.php" style="float:left; margin-left: 500px;"> <text class="text-primary">Sign Up</text> </a>
-    <a href="Ticketing.php" style="float:left; margin-left: 30px;"> <text class="text-secondary">Login</text> </a>
+
+  
     <div style="clear: both;"></div>
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -75,35 +56,38 @@
             <li class="nav-item">
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
+
+    
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link">Hello <?php echo($_SESSION['user'])?></a>
+            </li>
+            <form method="POST">
+            <li class="nav-item">
+                    <button type ="submit" class="btn btn-danger" name="logout">Logout</button>
+            </li>
+            </form>
+
             </ul>
         </div>
+      
+        
         </nav>
 
-    <!-- ISIAN PERTAMA-->
-    <div class="container col-md-3 mt-5">
-      <form method="post">
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" name="password" id="exampleInputPassword1">
-        </div>
-        <div class="text-center">
-        <label>New Member?</label> <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
-        </div>
-        <div class="text-right">
-        <button name="login" class="btn btn-primary active" type="submit" aria-pressed="true">Login</button>  
-        </div>
- 
-   
-      </form>
-    </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+         <strong>Login Berhasil!</strong> Selamat Datang <?php echo($username)?>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
     <!--FOOTER-->
-    <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
-            </div>
-        </footer>
+    <ul class="nav justify-content-center bg-dark" style="position: fixed; left: 0; bottom: 0; width:100%;">
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Copyright 2020</a>
+      </li>
+    </ul>
   </body>
 </html>
