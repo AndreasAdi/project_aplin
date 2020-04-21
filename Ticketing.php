@@ -23,7 +23,7 @@
         if($cekpass){
           session_start();
           $_SESSION['user']=$data['Nama'];
-          header("Location: user.php");
+          header("Location: LoginSuccess.php");
         }
         else{
           echo "<script>alert('Password Salah!')</script>";
