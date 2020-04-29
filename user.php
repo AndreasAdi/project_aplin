@@ -83,7 +83,7 @@
   </button>
 </div>
 
-    <!--FOOTER-->
+    <!--INI FOOTER-->
     <ul class="nav justify-content-center bg-dark" style="position: fixed; left: 0; bottom: 0; width:100%;">
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Copyright 2020</a>
@@ -91,3 +91,9 @@
     </ul>
   </body>
 </html>
+
+<!-- 
+  REMARK
+
+  
+ -->
