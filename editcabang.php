@@ -2,23 +2,27 @@
     include "DB/database.php";
     session_start();
     
-    if(isset($_POST['btnadd'])){
-        $queryinsert='INSERT INTO snack(nama_snack,harga_snack) VALUES(:nama_snack,:harga_snack)';
+    if(isset($_POST['btnedit'])){
+        $queryupdate="UPDATE cabang set nama_cabang= :nama_cabang, kota_cabang = :kota_cabang, alamat_cabang= :alamat_cabang where id_cabang = $_GET[cabang]";
         try {
-            $stmt=$db->prepare($queryinsert);
-            $stmt->bindValue(':nama_snack',$_POST['nama_snack'],PDO::PARAM_STR);
-            $stmt->bindValue(':harga_snack',$_POST["harga_snack"],PDO::PARAM_STR);
+            $stmt=$db->prepare($queryupdate);
+            $stmt->bindValue(':nama_cabang',$_POST['nama_cabang'],PDO::PARAM_STR);
+            $stmt->bindValue(':kota_cabang',$_POST["kota_cabang"],PDO::PARAM_STR);
+            $stmt->bindValue(':alamat_cabang',$_POST["alamat_cabang"],PDO::PARAM_STR);
             $result=$stmt->execute();
-            header('Location: snack.php');
+            header('Location: cabang.php');
     }
          catch (\Throwable $th) {
                 //throw $th;
         }
 }
-
+$query = "SELECT * from cabang where id_cabang = $_GET[cabang]";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['btncancel'])){
-    header('Location: snack.php');
+    header('Location: cabang.php');
 }
 ?>
 <!doctype html>
@@ -49,7 +53,6 @@ if(isset($_POST['btncancel'])){
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
     <Form method='post'>
-
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
@@ -78,26 +81,27 @@ if(isset($_POST['btncancel'])){
         </nav>
 
 
-        <div class="container mt-5">
-            <form method="post">
-                <div class="form-group">
-                    <label for="nama_snack">Nama</label><br>
-                    <input class="form-control" type="text" name="nama_snack" required>
-                </div>
-                <div class="form-group">
-                    <label for="harga_snack">Harga</label><br>
-                    <div class="input-group-prepend">
-                            <span class="input-group-text">Rp</span>
-                            <input type="text" class="form-control" id="harga_snack" name='harga_snack' required>
-                        </div>
-                       
-                    </div>
-                    <button class="btn btn-primary" name="btnadd">Add</button>
-                <button class="btn btn-danger" name="btncancel">Cancel</button>
-                </div>
-                
-            </form>
-        </div>
+        <div class="container mt-5 col-5">
+        <h3 class="mb-5">Edit Cabang</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Nama Cabang</label><br>
+                <input class="form-control" type="text" name="nama_cabang" value="<?php echo ($result[0]['nama_cabang'])?>">
+            </div>
+            <div class="form-group">
+                <label>Kota</label><br>
+                <input class="form-control" type="text" name="kota_cabang" value="<?php echo ($result[0]['kota_cabang'])?>">
+            </div>
+
+            <div class="form-group">
+                <label>Alamat</label><br>
+                <input class="form-control" type="text" name="alamat_cabang" value="<?php echo ($result[0]['alamat_cabang'])?>">
+            </div>
+
+            <button type="submit" class="btn btn-primary" name="btnedit">Edit</button>
+            <button class="btn btn-danger" name="btncancel">Cancel</button>
+        </form>
+    </div>
 
 
    

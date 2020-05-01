@@ -65,6 +65,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="jadwal.php">Jadwal</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cabang.php">Cabang</a>
+                    </li>
                 </ul>
                 <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
             </div>
