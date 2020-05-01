@@ -3,16 +3,41 @@
     session_start();
     
     if(isset($_POST['btnedit'])){
-        $queryupdate="UPDATE film set judul= :judul, tahun = :tahun, cast = :cast, genre =:genre, deskripsi = :deskripsi,durasi = :durasi where id_film = $_GET[film]";
+        $genre = $_POST['genre'];
+        $cast = $_POST['cast'];
+        $id_film =$_GET["film"];
+        $queryupdate="UPDATE film set judul= :judul, tahun = :tahun,deskripsi = :deskripsi,durasi = :durasi where id_film = $id_film";
         try {
             $stmt=$db->prepare($queryupdate);
             $stmt->bindValue(':judul',$_POST['judul'],PDO::PARAM_STR);
             $stmt->bindValue(':tahun',$_POST["tahun"],PDO::PARAM_STR);
-            $stmt->bindValue(':cast',$_POST['cast'],PDO::PARAM_STR);
-            $stmt->bindValue(':genre',$_POST['genre'],PDO::PARAM_STR);
             $stmt->bindValue(':deskripsi',$_POST['deskripsi'],PDO::PARAM_STR);
             $stmt->bindValue(':durasi',$_POST['durasi'],PDO::PARAM_STR);
+            $result=$stmt->execute();       
+
+
+            $querydelete="DELETE FROM filmgenre where Id_film =$_GET[film]";
+            $db->exec($querydelete);
+
+            $querydelete="DELETE FROM filmcast where Id_film =$_GET[film]";
+            $db->exec($querydelete);
+
+            foreach ($genre as $key => $value) {   
+            $query = "INSERT INTO filmgenre(nama_genre,id_film) VALUES(:nama_genre,:id_film)";
+            $stmt=$db->prepare($query);
+            $stmt->bindValue(':nama_genre',$value,PDO::PARAM_STR);
+            $stmt->bindValue(':id_film',$id_film,PDO::PARAM_STR);
             $result=$stmt->execute();
+            }
+
+            foreach ($cast as $key => $value) {   
+                $query = "INSERT INTO filmcast(nama_cast,id_film) VALUES(:nama_cast,:id_film)";
+                $stmt=$db->prepare($query);
+                $stmt->bindValue(':nama_cast',$value,PDO::PARAM_STR);
+                $stmt->bindValue(':id_film',$id_film,PDO::PARAM_STR);
+                $result=$stmt->execute();
+            }
+
             header('Location: film.php');
     }
          catch (\Throwable $th) {
@@ -29,6 +54,13 @@ $stmt = $db->prepare($query);
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$query = "SELECT nama_genre FROM filmgenre where id_film = $_GET[film]";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$genre = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,31 +73,16 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <title>Hello, world!</title>
 </head>
 
 <body>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
     <Form method='post'>
-        <a href="index.php">
-            <h3 style="text-align:center; float:left; margin-left: 47%;">BioskopID</h3>
-        </a>
 
-        <div style="clear: both;"></div>
         <!--NAVBAR-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -73,7 +90,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
                     <li class="nav-item">
@@ -101,11 +118,30 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="form-group">
                     <label for="cast">Cast</label><br>
-                    <input class="form-control" type="text" name="cast" value="<?php echo ($result[0]['cast'])?>">
+                    <select class="form-control" multiple="multiple" name="cast[]" id="cast">
+                   <?php
+                    $querycast = "SELECT nama_cast FROM listcast";
+                    $listcast = $db->query($querycast)->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($listcast as $key => $value) {        
+                        $itemcast = $listcast[$key]["nama_cast"];  
+                        echo("<option>$itemcast</option>");
+                    }
+                   ?>
+                </select>
                 </div>
                 <div class="form-group">
                     <label for="cast">Genre</label><br>
-                    <input class="form-control" type="text" name="genre" value="<?php echo ($result[0]['genre'])?>">
+                    <select class="form-control" multiple="multiple" name="genre[]" id="genre">">
+                   <?php
+                    $query = "SELECT nama_genre FROM genre";
+                    $listgenre = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+         
+                    foreach ($listgenre as $key => $value) {        
+                        $itemgenre = $listgenre[$key]["nama_genre"];  
+                        echo("<option>$itemgenre</option>");
+                    }
+                   ?>
+                </select>
                 </div>
                 <div class="form-group">
                     <label for="durasi">Durasi (Menit)</label><br>
@@ -129,7 +165,27 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </footer>
 
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
+        <script>
+        $(document).ready(function() {
+        $('#genre').select2({
+            tags: true
+        });
+        $('#cast').select2({
+            tags: true
+        });
+        });
+        </script>
 </body>
 
 </html>

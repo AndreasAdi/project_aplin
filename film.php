@@ -18,6 +18,13 @@
         $id = $_POST['btndelete'];
         $querydelete="DELETE FROM film where Id_film =$id";
         $db->exec($querydelete);
+
+        $querydelete="DELETE FROM filmgenre where Id_film =$id";
+        $db->exec($querydelete);
+
+        $querydelete="DELETE FROM filmcast where Id_film =$id";
+        $db->exec($querydelete);
+
         header('Location: film.php');
     }
 ?>
@@ -39,14 +46,9 @@
 
 <body>
     <Form method='post'>
-        <a href="index.php">
-            <h3 style="text-align:center; float:left; margin-left: 47%;">BioskopID</h3>
-        </a>
-
-        <div style="clear: both;"></div>
         <!--NAVBAR-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,7 +56,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item-active">
+                    <li class="nav-item active">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
                     <li class="nav-item">
@@ -93,14 +95,38 @@
                         <tbody>
                             <?php 
                                  foreach ($result as $key => $value) {
+                                    $genre ="";
+                                    $cast ="";
+                                   #select genre sesuai film
+                                    $query = "SELECT nama_genre FROM filmgenre where id_film =$value[id_film]";
+                                    $listgenre = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($listgenre as $key => $hasil) {
+                                        #concat hasil select genre dan beri coma
+                                       $genre =$genre.$hasil["nama_genre"].",";                
+                                    }
+                                    #hapus coma paling belakang
+                                    $genre = substr($genre,0,-1);
+
+
+                                    $query = "SELECT nama_cast FROM filmcast where id_film =$value[id_film]";
+                                    $listcast = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($listcast as $key => $hasil) {
+                                        #concat hasil select genre dan beri coma
+                                       $cast =$cast.$hasil["nama_cast"].",";                
+                                    }
+                                    #hapus coma paling belakang
+                                    $cast = substr($cast,0,-1);
+                                    
                             ?>
                             <tr>
                                 <td><?php echo $value["id_film"];?></td>
                                 <td><?php echo "<img src='poster/$value[poster]' style ='height : 10%'>";?></td>
                                 <td><?php echo $value["judul"];?></td>
                                 <td><?php echo $value["tahun"];?></td>
-                                <td><?php echo $value["cast"];?></td>
-                                <td><?php echo $value["genre"];?></td>
+                                <td><?php echo $cast;?></td>
+                                <td><?php echo $genre;?></td>
                                 <td><?php echo $value["deskripsi"];?></td>
                                 <td><?php echo $value["durasi"];?></td>
                                 <td><?php echo"<button class='btn btn-warning' type ='submit' value ='$value[id_film]' name ='btnupdate'><i class='fas fa-edit'></i></button>"?></td>
@@ -117,7 +143,7 @@
 
 
         <!--FOOTER-->
-        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
+        <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
             <div class="footer-copyright text-center py-3">© 2020 Copyright
             </div>
         </footer>

@@ -3,10 +3,7 @@
     session_start();
     
 
-    if(isset($_POST['btnadd'])){
  
-        
-    }
 // if(isset($_POST['btnadd'])){
     // var_dump($_POST['poster']);
     // var_dump($_FILES);
@@ -24,66 +21,19 @@
                 __DIR__."/poster/".$_POST['judul'].".".$tipefile);
             if ($status != false) {
                 
-                $genre = $_POST['genre'];
-                $cast = $_POST['cast'];
-                $queryinsert='INSERT INTO film(judul,tahun,deskripsi,durasi,poster) VALUES(:judul,:tahun,:deskripsi,:durasi,:poster)';
+                $queryinsert='INSERT INTO film(judul,tahun,cast,genre,deskripsi,durasi,poster) VALUES(:judul,:tahun,:cast,:genre,:deskripsi,:durasi,:poster)';
                 try {
-                    #insert ke table film
                     $stmt=$db->prepare($queryinsert);
                     $stmt->bindValue(':judul',$_POST['judul'],PDO::PARAM_STR);
                     $stmt->bindValue(':tahun',$_POST["tahun"],PDO::PARAM_STR);
+                    $stmt->bindValue(':cast',$_POST['cast'],PDO::PARAM_STR);
+                    $stmt->bindValue(':genre',$_POST['genre'],PDO::PARAM_STR);
                     $stmt->bindValue(':durasi',$_POST['durasi'],PDO::PARAM_STR);
                     $stmt->bindValue(':deskripsi',$_POST['deskripsi'],PDO::PARAM_STR);
                     $stmt->bindValue(':poster',$_POST['judul'].".".$tipefile,PDO::PARAM_STR);
                     $result=$stmt->execute();
-                    
-                    #dapatkan id movie
-                    $query = "SELECT max(id_film) AS id_film FROM film";
-                    $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-                    $id_film = $result[0]["id_film"];
-
-
-                     #cek apakah genre sudah ada atau belum jika ada insert baru
-                    foreach ($genre as $key => $value) {              
-                        $query = "SELECT * FROM genre where nama_genre = '$value'";
-                        $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-                        if(!$result){
-                            #jika genre belum ada insert ke table genre
-                            $query = "INSERT INTO genre(nama_genre) VALUES(:nama_genre)";
-                            $stmt=$db->prepare($query);
-                            $stmt->bindValue(':nama_genre',$value,PDO::PARAM_STR);
-                            $result=$stmt->execute();
-                        }
-                        #insert ke table filmgenre
-                        $query = "INSERT INTO filmgenre(nama_genre,id_film) VALUES(:nama_genre,:id_film)";
-                            $stmt=$db->prepare($query);
-                            $stmt->bindValue(':nama_genre',$value,PDO::PARAM_STR);
-                            $stmt->bindValue(':id_film',$id_film,PDO::PARAM_STR);
-                            $result=$stmt->execute();
-
-                    }
-                    #cek apakah cast sudah ada atau belum jika ada insert baru
-                    $cast = $_POST['cast'];
-                    foreach ($cast as $key => $value) {              
-                        $query = "SELECT * FROM listcast where nama_cast = '$value'";
-                        $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-                        if(!$result){
-                            #jika cast belum ada insert ke table cast
-                            $querycast = "INSERT INTO listcast(nama_cast) VALUES(:nama_cast)";
-                            $stmt=$db->prepare($querycast);
-                            $stmt->bindValue(':nama_cast',$value,PDO::PARAM_STR);
-                            $result=$stmt->execute();
-                        }
-                        #insert ke table filmcast
-                        $query = "INSERT INTO filmcast(nama_cast,id_film) VALUES(:nama_cast,:id_film)";
-                            $stmt=$db->prepare($query);
-                            $stmt->bindValue(':nama_cast',$value,PDO::PARAM_STR);
-                            $stmt->bindValue(':id_film',$id_film,PDO::PARAM_STR);
-                            $result=$stmt->execute();
-            
-                    }
-                    
-                }
+                    header('Location: film.php');
+            }
                  catch (\Throwable $th) {
                         //throw $th;
                 }
@@ -124,9 +74,14 @@ if(isset($_POST['btncancel'])){
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
     <Form method='post'>
+        <a href="index.php">
+            <h3 style="text-align:center; float:left; margin-left: 47%;">BioskopID</h3>
+        </a>
+
+        <div style="clear: both;"></div>
         <!--NAVBAR-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -134,7 +89,7 @@ if(isset($_POST['btncancel'])){
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
                     <li class="nav-item">
@@ -162,29 +117,13 @@ if(isset($_POST['btncancel'])){
             </div>
             <div class="form-group">
                 <label for="cast">Cast</label><br>
-              <select class="form-control" multiple="multiple" name="cast[]" id="cast">
-                   <?php
-                    $querycast = "SELECT nama_cast FROM listcast";
-                    $listcast = $db->query($querycast)->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($listcast as $key => $value) {        
-                        $itemcast = $listcast[$key]["nama_cast"];  
-                        echo("<option>$itemcast</option>");
-                    }
-                   ?>
-                </select>
+                <input class="form-control" type="text" name="cast">
             </div>
             <div class="form-group">
                 <label for="cast">Genre</label><br>
-                <select class="form-control" multiple="multiple" name="genre[]" id="genre">
-                   <?php
-                    $query = "SELECT nama_genre FROM genre";
-                    $listgenre = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-         
-                    foreach ($listgenre as $key => $value) {        
-                        $itemgenre = $listgenre[$key]["nama_genre"];  
-                        echo("<option>$itemgenre</option>");
-                    }
-                   ?>
+                <select class="form-control js-example-basic-single" multiple="multiple" name="genre">
+                    <option value="Horor">Horor</option>
+                    <option value="Action">Action</option>
                 </select>
                 <!-- <input class="form-control" type="text" name="genre"> -->
             </div>
@@ -227,12 +166,8 @@ if(isset($_POST['btncancel'])){
 
     <script>
         $(document).ready(function() {
-        $('#genre').select2({
-            tags: true
-        });
-        $('#cast').select2({
-            tags: true
-        });
+        $('.js-example-basic-single').select2();
+
       
         });
     </script>

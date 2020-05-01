@@ -39,14 +39,9 @@
 
 <body>
     <Form method='post'>
-        <a href="index.php">
-            <h3 style="text-align:center; float:left; margin-left: 47%;">BioskopID</h3>
-        </a>
-
-        <div style="clear: both;"></div>
         <!--NAVBAR-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -57,7 +52,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
-                    <li class="nav-item-active">
+                    <li class="nav-item active">
                         <a class="nav-link" href="snack.php">Snack</a>
                     </li>
                     <li class="nav-item">
@@ -88,10 +83,11 @@
                             <?php 
                                  foreach ($result as $key => $value) {
                             ?>
+                           
                             <tr>
                                 <td><?php echo $value["id_snack"];?></td>
                                 <td><?php echo $value["nama_snack"];?></td>
-                                <td><?php echo $value["harga_snack"];?></td>
+                                <td><?php echo number_format($value["harga_snack"], 0, ',', '.');?></td>
                                 <td><?php echo"<button class='btn btn-warning' type ='submit' value ='$value[id_snack]' name ='btnupdate'><i class='fas fa-edit'></i></button>"?></td>
                                 <td><?php echo"<button class='btn btn-danger' type ='submit' value ='$value[id_snack]' name='btndelete'><i class='fas fa-trash'></i></button>"?></td>
                             </tr>
