@@ -66,13 +66,13 @@ if(isset($_POST['btncancel'])){
                     <li class="nav-item">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="snack.php">Snack</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="jadwal.php">Jadwal</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="cabang.php">Cabang</a>
                     </li>
                 </ul>

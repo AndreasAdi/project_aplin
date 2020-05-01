@@ -59,7 +59,7 @@ if(isset($_POST['btncancel'])){
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
                     <li class="nav-item">
