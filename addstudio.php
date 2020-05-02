@@ -1,30 +1,24 @@
 <?php
     include "DB/database.php";
     session_start();
-    if(isset($_POST['btnadd'])){
-                $queryinsert='INSERT INTO cabang(nama_cabang,kota_cabang,alamat_cabang) VALUES(:nama_cabang,:kota_cabang,:alamat_cabang)';
-                try {
-                    #insert ke table film
-                    $stmt=$db->prepare($queryinsert);
-                    $stmt->bindValue(':nama_cabang',$_POST['nama_cabang'],PDO::PARAM_STR);
-                    $stmt->bindValue(':kota_cabang',$_POST["kota_cabang"],PDO::PARAM_STR);
-                    $stmt->bindValue(':alamat_cabang',$_POST['alamat_cabang'],PDO::PARAM_STR);
-                    $result=$stmt->execute();
-                    
-                  
-                    header('Location: cabang.php');
-                }
-                 catch (\Throwable $th) {
-                        //throw $th;
-                }
-
     
-            
+    if(isset($_POST['btnadd'])){
+        $queryinsert='INSERT INTO studio(nama_studio,id_cabang) VALUES(:nama_studio,:id_cabang)';
+        try {
+            $stmt=$db->prepare($queryinsert);
+            $stmt->bindValue(':nama_studio',$_POST['nama_studio'],PDO::PARAM_STR);
+            $stmt->bindValue(':id_cabang',$_POST["cabang"],PDO::PARAM_STR);
+            $result=$stmt->execute();
+            header('Location: studio.php');
+    }
+         catch (\Throwable $th) {
+                //throw $th;
+        }
 }
 
 
 if(isset($_POST['btncancel'])){
-    header('Location: cabang.php');
+    header('Location: studio.php');
 }
 ?>
 <!doctype html>
@@ -38,17 +32,13 @@ if(isset($_POST['btncancel'])){
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
-
-    <title>Hello, world!</title>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <title>Studio</title>
 </head>
 
 <body>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
     <Form method='post'>
+
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
@@ -68,49 +58,53 @@ if(isset($_POST['btncancel'])){
                     <li class="nav-item">
                         <a class="nav-link" href="jadwal.php">Jadwal</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="cabang.php">Cabang</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="studio.php">Studio</a>
                     </li>
                 </ul>
                 <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
             </div>
         </nav>
-    </form>
-
-    <div class="container mt-5 col-5">
-        <h3 class="mb-5">Add Cabang</h3>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Nama Cabang</label><br>
-                <input class="form-control" type="text" name="nama_cabang">
-            </div>
-            <div class="form-group">
-                <label>Kota</label><br>
-                <input class="form-control" type="text" name="kota_cabang">
-            </div>
-
-            <div class="form-group">
-                <label>Alamat</label><br>
-                <input class="form-control" type="text" name="alamat_cabang">
-            </div>
-
-            <button type="submit" class="btn btn-primary" name="btnadd">Add</button>
-            <button class="btn btn-danger" name="btncancel">Cancel</button>
-        </form>
-    </div>
 
 
-
-    <!-- Footer -->
-    <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright
+        <div class="container mt-5">
+            <form method="post">
+                <div class="form-group">
+                    <label for="nama_studio">Nama</label><br>
+                    <input class="form-control" type="text" name="nama_studio" required>
+                </div>
+                <div class="form-group">
+                <label for="cast">Cabang</label><br>
+              <select class="form-control" name="cabang" id="cabang">
+                   <?php
+                    $querycabang = "SELECT id_cabang,nama_cabang FROM cabang";
+                    $listcabang = $db->query($querycabang)->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($listcabang as $key => $value) {        
+                        $id_cabang = $listcabang[$key]["id_cabang"];  
+                        $cabang = $listcabang[$key]["nama_cabang"];  
+                        echo("<option value ='$id_cabang'>$cabang</option>");
+                    }
+                   ?>
+                </select>
+                </div>
+                    <button class="btn btn-primary" name="btnadd">Add</button>
+                <button class="btn btn-danger" name="btncancel">Cancel</button>
+                </div>
+                
+            </form>
         </div>
-    </footer>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+
+   
+        <!-- Footer -->
+        <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright
+            </div>
+        </footer>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -119,11 +113,11 @@ if(isset($_POST['btncancel'])){
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
-    <script>
+<script>
 
-    </script>
+</script>
 </body>
 
 </html>

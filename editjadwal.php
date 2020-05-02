@@ -2,12 +2,12 @@
     include "DB/database.php";
     session_start();
     
-    if(isset($_POST['btnadd'])){
-        $queryinsert='INSERT INTO jadwal(id_film,id_cabang,id_studio,waktu,status) VALUES(:id_film,:id_cabang,:id_studio,:waktu,:status)';
+    if(isset($_POST['btnedit'])){
+        $queryupdate="UPDATE jadwal set id_film= :id_film, id_cabang = :id_cabang,id_studio =:id_studio,waktu =:waktu,status =:status where id_jadwal = $_GET[jadwal]";
         try {
-            $stmt=$db->prepare($queryinsert);
+            $stmt=$db->prepare($queryupdate);
             $stmt->bindValue(':id_film',$_POST['film'],PDO::PARAM_STR);
-            $stmt->bindValue(':id_cabang',$_POST["cabang"],PDO::PARAM_STR);
+            $stmt->bindValue(':id_cabang',$_POST['cabang'],PDO::PARAM_STR);
             $stmt->bindValue(':id_studio',$_POST['studio'],PDO::PARAM_STR);
             $stmt->bindValue(':waktu',$_POST["waktu"],PDO::PARAM_STR);
             $stmt->bindValue(':status',$_POST['status'],PDO::PARAM_STR);
@@ -16,12 +16,16 @@
     }
          catch (\Throwable $th) {
                 //throw $th;
+                echo($th);
         }
 }
-
+$query = "SELECT * from jadwal where id_jadwal = $_GET[jadwal]";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['btncancel'])){
-    header('Location: studio.php');
+    header('Location: jadwal.php');
 }
 ?>
 <!doctype html>
@@ -35,11 +39,14 @@ if(isset($_POST['btncancel'])){
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
     <title>Jadwal</title>
 </head>
 
 <body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
     <Form method='post'>
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -73,7 +80,7 @@ if(isset($_POST['btncancel'])){
 
 
         <div class="container mt-5 col-5">
-        <h3 class="mb-5">Add Jadwal</h3>
+        <h3 class="mb-5">Edit Jadwal</h3>
             <form id="add_jadwal">
                 <div class="form-group">
                 <label for="cast">Film</label><br>
@@ -126,7 +133,7 @@ if(isset($_POST['btncancel'])){
                 </select>
                 </div>
 
-                    <button class="btn btn-primary" name="btnadd">Add</button>
+                    <button class="btn btn-primary" name="btnedit">Edit</button>
                 <button class="btn btn-danger" name="btncancel">Cancel</button>
                 </div>
                 
@@ -136,27 +143,24 @@ if(isset($_POST['btncancel'])){
 
    
         <!-- Footer -->
-        <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
+        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
             <div class="footer-copyright text-center py-3">© 2020 Copyright
             </div>
         </footer>
+  
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
-     <script src="jquery.js">
-    </script>
+          <script src="jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
- <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
 
 <script>
-
-    $("#cabang").change(function(){
+        $("#cabang").change(function(){
         loadstudio($(this).val());
     });
 

@@ -2,23 +2,23 @@
     include "DB/database.php";
     session_start();
 
-    if(isset($_POST['addsnack'])){
-        header('Location: addsnack.php');
+    if(isset($_POST['addstudio'])){
+        header('Location: addstudio.php');
     }
-    $query = "SELECT * FROM snack";
+    $query = "SELECT c.nama_cabang AS nama_cabang,s.nama_studio AS nama_studio, s.id_studio AS id_studio FROM cabang c, studio s WHERE s.id_cabang = c.id_cabang";
     // Query Bare! Jangan digunakan kalau TERIMA DATA DARI CLIENT!
     $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
 
     if(isset($_POST['btnupdate'])){
         $id = $_POST['btnupdate'];
-        header("Location: editsnack.php?snack=$id");
+        header("Location: editstudio.php?studio=$id");
     }
     if(isset($_POST['btndelete'])){
         $id = $_POST['btndelete'];
-        $querydelete="DELETE FROM snack where id_snack =$id";
+        $querydelete="DELETE FROM studio where id_studio =$id";
         $db->exec($querydelete);
-        header('Location: snack.php');
+        header('Location: studio.php');
     }
 ?>
 <!doctype html>
@@ -52,7 +52,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="film.php">Film</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="snack.php">Snack</a>
                     </li>
                     <li class="nav-item">
@@ -61,7 +61,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="cabang.php">Cabang</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="studio.php">Studio</a>
                     </li>
                 </ul>
@@ -72,30 +72,30 @@
 
         <div class="container mt-5">
             <form method="post">
-                <button class="btn btn-primary" type="submit" name="addsnack">Add</button>
+                <button class="btn btn-primary" type="submit" name="addstudio">Add</button>
 
                 <div class="container mt-5">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>Nama</th>
-                                <th>Harga</th>
+                                <th>Nama Studio</th>
+                                <th>Nama Cabang</th>
                                 <th>Update</th>
                                 <th>Delete</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
                                  foreach ($result as $key => $value) {
                             ?>
-                           
                             <tr>
-                                <td><?php echo $value["id_snack"];?></td>
-                                <td><?php echo $value["nama_snack"];?></td>
-                                <td><?php echo number_format($value["harga_snack"], 0, ',', '.');?></td>
-                                <td><?php echo"<button class='btn btn-warning' type ='submit' value ='$value[id_snack]' name ='btnupdate'><i class='fas fa-edit'></i></button>"?></td>
-                                <td><?php echo"<button class='btn btn-danger' type ='submit' value ='$value[id_snack]' name='btndelete'><i class='fas fa-trash'></i></button>"?></td>
+                                <td><?php echo $value["id_studio"];?></td>
+                                <td><?php echo $value["nama_studio"];?></td>
+                                <td><?php echo $value["nama_cabang"];?></td>
+                                <td><?php echo"<button class='btn btn-warning' type ='submit' value ='$value[id_studio]' name ='btnupdate'><i class='fas fa-edit'></i></button>"?></td>
+                                <td><?php echo"<button class='btn btn-danger' type ='submit' value ='$value[id_studio]' name='btndelete'><i class='fas fa-trash'></i></button>"?></td>
                             </tr>
                             <?php
                               }

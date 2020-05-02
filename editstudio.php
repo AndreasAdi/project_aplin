@@ -1,6 +1,30 @@
 <?php
     include "DB/database.php";
     session_start();
+    
+    if(isset($_POST['btnedit'])){
+        $queryupdate="UPDATE studio set nama_studio= :nama_studio, id_cabang = :id_cabang where id_studio = $_GET[studio]";
+        try {
+         
+            $stmt=$db->prepare($queryupdate);
+            $stmt->bindValue(':nama_studio',$_POST['nama_studio'],PDO::PARAM_STR);
+            $stmt->bindValue(':id_cabang',$_POST["cabang"],PDO::PARAM_STR);
+            $result=$stmt->execute();
+            header('Location: studio.php');
+    }
+         catch (\Throwable $th) {
+                //throw $th;
+        }
+}
+$query = "SELECT s.nama_studio AS nama_studio, c.id_cabang AS id_cabang from studio s, cabang c where s.id_studio = $_GET[studio] AND s.id_cabang = c.id_cabang";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+if(isset($_POST['btncancel'])){
+    header('Location: studio.php');
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -52,7 +76,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="cabang.php">Cabang</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="studio.php">Studio</a>
                     </li>
                 </ul>
@@ -61,13 +85,48 @@
         </nav>
 
 
+        <div class="container mt-5">
+            <form method="post">
+                <div class="form-group">
+                    <label for="nama_snack">Nama</label><br>
+                    <input class="form-control" type="text" name="nama_studio" required value="<?php echo ($result[0]['nama_studio'])?>">
+                </div>
+                <div class="form-group">
+                <select class="form-control" name="cabang" id="cabang">
+                   <?php
+                    $querycabang = "SELECT id_cabang,nama_cabang FROM cabang";
+                    $listcabang = $db->query($querycabang)->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($listcabang as $key => $value) {           
+                        $id_cabang = $listcabang[$key]["id_cabang"];
+                        $cabang = $listcabang[$key]["nama_cabang"];  
+                    
+                        if($id_cabang == $result[0]['id_cabang']){
+                            echo("<option value ='$id_cabang' selected>$cabang</option>");
+                        }
+                        else{
+                            echo("<option value ='$id_cabang'>$cabang</option>");
+                        }
+                      
+                    }
+                   ?>
+                </select>
+                </div>
+                    <button class="btn btn-primary" name="btnedit">Update</button>
+                <button class="btn btn-danger" name="btncancel">Cancel</button>
+                </div>
+                
+            </form>
+        </div>
 
 
-    <!--FOOTER-->
-    <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
+   
+        <!-- Footer -->
+        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
             <div class="footer-copyright text-center py-3">© 2020 Copyright
             </div>
         </footer>
+
+
 </body>
 
 </html>
