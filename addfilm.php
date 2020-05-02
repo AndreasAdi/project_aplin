@@ -1,15 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
-
-    if(isset($_POST['btnadd'])){
- 
-        
-    }
-// if(isset($_POST['btnadd'])){
-    // var_dump($_POST['poster']);
-    // var_dump($_FILES);
+    // if(isset($_POST['btnadd'])){
+    //var_dump($_POST['poster']);
+    //var_dump($_FILES);
     if (isset($_FILES['poster'])) {
         // Kalau dikirim, cek apakah file yang di upload error apa tidak
         // Error jika diatas 0! 
@@ -19,7 +13,7 @@
 
             $tipefile = explode(".",$_FILES['poster']['name']);
             $tipefile = $tipefile[2];
-
+            var_dump($tipefile);
             $status = move_uploaded_file($_FILES["poster"]["tmp_name"], 
                 __DIR__."/poster/".$_POST['judul'].".".$tipefile);
             if ($status != false) {
@@ -87,8 +81,6 @@
                  catch (\Throwable $th) {
                         //throw $th;
                 }
-
-    
             }
         } else {
             // Jika file upload diatas 0 error code nya, maka upload file gagal!
@@ -96,8 +88,6 @@
         }
     }
 //}
-
-
 if(isset($_POST['btncancel'])){
     header('Location: film.php');
 }

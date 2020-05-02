@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,11 +20,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   
-
-
-    
-
- 
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
@@ -32,13 +30,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="List_Film.php">List Film</a>
+                <a class="nav-link" href="list_film.php">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Ticketing.php">Ticketing</a>
+                <a class="nav-link" href="DaftarFilm.php">Beli Ticket</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
@@ -55,7 +53,7 @@
     <div class="container-fluid mt-5">
         <div class='badge badge-primary text-wrap bg-primary text-light' style='width:100%;height:100%;'>
             <p class='font-weight-bold' style='font-size:30px;'>Login Berhasil!</p> <br>
-            <p class='font-weight-bold' style='font-size:20px;'>Selamat Datang,User!</p>
+            <p class='font-weight-bold' style='font-size:20px;'>Selamat Datang,<?php echo $_SESSION['user']; ?>!</p>
         </div>
     </div>
         <!--FOOTER-->
