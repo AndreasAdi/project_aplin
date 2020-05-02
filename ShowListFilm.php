@@ -2,7 +2,7 @@
     include "DB/database.php";
     session_start();
 
-    $query = "SELECT * FROM jadwal where $_GET[cabang]";
+    $query = "SELECT * FROM jadwal where id_cabang=$_GET[cabang]";
     // Query Bare! Jangan digunakan kalau TERIMA DATA DARI CLIENT!
     $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -121,14 +121,6 @@
             </form>
         </div>
 
-
-        <!--FOOTER-->
-        <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
-            </div>
-        </footer>
-
-
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -147,5 +139,9 @@
          <!-- datatable -->
 
 </body>
-
+  <!-- Footer -->
+        <footer class="page-footer font-small bg-dark text-light mt-5">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright
+            </div>
+        </footer>
 </html>

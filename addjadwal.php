@@ -133,13 +133,6 @@ if(isset($_POST['btncancel'])){
             </form>
         </div>
 
-
-   
-        <!-- Footer -->
-        <footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
-            </div>
-        </footer>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
@@ -180,5 +173,11 @@ if(isset($_POST['btncancel'])){
 }
 </script>
 </body>
+   
+   <!-- Footer -->
+   <footer class="page-footer font-small bottom bg-dark text-light mt-5">
+       <div class="footer-copyright text-center py-3">© 2020 Copyright
+       </div>
+   </footer>
 
 </html>

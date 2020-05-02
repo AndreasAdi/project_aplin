@@ -105,14 +105,13 @@ if(isset($_POST['btncancel'])){
         </div>
 
 
+</body>
+
    
         <!-- Footer -->
         <footer class="page-footer font-small bottom bg-dark text-light mt-5">
             <div class="footer-copyright text-center py-3">© 2020 Copyright
             </div>
         </footer>
-
-
-</body>
 
 </html>

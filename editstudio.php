@@ -118,6 +118,7 @@ if(isset($_POST['btncancel'])){
             </form>
         </div>
 
+</body>
 
    
         <!-- Footer -->
@@ -125,8 +126,5 @@ if(isset($_POST['btncancel'])){
             <div class="footer-copyright text-center py-3">© 2020 Copyright
             </div>
         </footer>
-
-
-</body>
 
 </html>

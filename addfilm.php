@@ -2,7 +2,7 @@
     include "DB/database.php";
     session_start();
     // if(isset($_POST['btnadd'])){
-    //var_dump($_POST['poster']);
+    
     //var_dump($_FILES);
     if (isset($_FILES['poster'])) {
         // Kalau dikirim, cek apakah file yang di upload error apa tidak
@@ -10,9 +10,9 @@
 
         if ($_FILES["poster"]["error"] == 0) {
             // Upload file berhasil!
-
+            var_dump($_FILES['poster']);
             $tipefile = explode(".",$_FILES['poster']['name']);
-            $tipefile = $tipefile[2];
+            $tipefile = $tipefile[1];
             var_dump($tipefile);
             $status = move_uploaded_file($_FILES["poster"]["tmp_name"], 
                 __DIR__."/poster/".$_POST['judul'].".".$tipefile);
@@ -202,14 +202,6 @@ if(isset($_POST['btncancel'])){
         </form>
     </div>
 
-
-
-    <!-- Footer -->
-    <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright
-        </div>
-    </footer>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
@@ -233,5 +225,11 @@ if(isset($_POST['btncancel'])){
         });
     </script>
 </body>
+   
+   <!-- Footer -->
+   <footer class="page-footer font-small bottom bg-dark text-light mt-5">
+       <div class="footer-copyright text-center py-3">© 2020 Copyright
+       </div>
+   </footer>
 
 </html>
