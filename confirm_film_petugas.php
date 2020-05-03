@@ -86,14 +86,13 @@
         </tr>
     </tbody>
     </table>
-
-
-
-    <!--FOOTER-->
-    <ul class="nav justify-content-center bg-dark" style="position: fixed; left: 0; bottom: 0; width:100%;">
-    <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Copyright 2020</a>
-    </li>
-    </ul>
   </body>
+  
+   
+        <!-- Footer -->
+        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
+            <div class="footer-copyright text-center py-3">© 2020 Copyright
+            </div>
+        </footer>
+
 </html>

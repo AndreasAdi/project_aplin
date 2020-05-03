@@ -102,10 +102,13 @@ if(isset($_POST['btncancel'])){
         </form>
     </div>
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 547fdddef475679dd97d2c20c2bfd36ded2d7fe8
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
@@ -121,9 +124,19 @@ if(isset($_POST['btncancel'])){
 
     </script>
 </body>
+<<<<<<< HEAD
     <!-- Footer -->
     <footer class="page-footer font-small bottom bg-dark text-light mt-5">
         <div class="footer-copyright text-center py-3">© 2020 Copyright
         </div>
     </footer>
+=======
+   
+   <!-- Footer -->
+   <footer class="page-footer font-small bottom bg-dark text-light mt-5">
+       <div class="footer-copyright text-center py-3">© 2020 Copyright
+       </div>
+   </footer>
+
+>>>>>>> 547fdddef475679dd97d2c20c2bfd36ded2d7fe8
 </html>
