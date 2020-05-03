@@ -148,12 +148,6 @@
         </div>
 
 
-<<<<<<< HEAD
- 
-
-
-=======
->>>>>>> 547fdddef475679dd97d2c20c2bfd36ded2d7fe8
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -172,13 +166,6 @@
          <!-- datatable -->
 
 </body>
-<<<<<<< HEAD
-       <!--FOOTER-->
-       <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
-            </div>
-        </footer>
-=======
 
    
         <!-- Footer -->
@@ -187,5 +174,4 @@
             </div>
         </footer>
 
->>>>>>> 547fdddef475679dd97d2c20c2bfd36ded2d7fe8
 </html>
