@@ -7,13 +7,12 @@
     if (isset($_FILES['poster'])) {
         // Kalau dikirim, cek apakah file yang di upload error apa tidak
         // Error jika diatas 0! 
-
         if ($_FILES["poster"]["error"] == 0) {
             // Upload file berhasil!
 
             $tipefile = explode(".",$_FILES['poster']['name']);
-            $tipefile = $tipefile[2];
-            var_dump($tipefile);
+            $ctr = count($tipefile)-1;
+            $tipefile = $tipefile[$ctr];
             $status = move_uploaded_file($_FILES["poster"]["tmp_name"], 
                 __DIR__."/poster/".$_POST['judul'].".".$tipefile);
             if ($status != false) {
@@ -82,6 +81,7 @@
                         //throw $th;
                 }
             }
+            header('Location: film.php');
         } else {
             // Jika file upload diatas 0 error code nya, maka upload file gagal!
             echo "Tidak ada file yang diterima oleh server!";
@@ -116,7 +116,7 @@ if(isset($_POST['btncancel'])){
     <Form method='post'>
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+        <a class="navbar-brand" href="admin.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -204,11 +204,7 @@ if(isset($_POST['btncancel'])){
 
 
 
-    <!-- Footer -->
-    <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright
-        </div>
-    </footer>
+
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
@@ -233,5 +229,9 @@ if(isset($_POST['btncancel'])){
         });
     </script>
 </body>
-
+    <!-- Footer -->
+    <footer class="page-footer font-small bottom bg-dark text-light mt-5">
+        <div class="footer-copyright text-center py-3">© 2020 Copyright
+        </div>
+    </footer>
 </html>

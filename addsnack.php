@@ -52,7 +52,7 @@ if(isset($_POST['btncancel'])){
 
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+        <a class="navbar-brand" href="admin.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -103,14 +103,8 @@ if(isset($_POST['btncancel'])){
         </div>
 
 
-   
-        <!-- Footer -->
-        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
-            </div>
-        </footer>
-
-
 </body>
-
+<footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
+<div class="footer-copyright text-center py-3">© 2020 Copyright</div>
+</footer>
 </html>
