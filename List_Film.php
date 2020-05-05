@@ -1,3 +1,28 @@
+<?php
+ session_start();
+ include "DB/database.php";
+if(isset($_POST['keyword'])){
+    header("Location: list_film.php?search=$_POST[keyword]");
+}
+if(isset($_GET['search'])){
+    $query = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0 AND f.judul like '%$_GET[search]%' ";
+    $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1 AND f.judul like '%$_GET[search]%' ";
+}
+else{
+    $query = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0";
+    $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
+}
+
+$stmt = $db->prepare($query);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $db->prepare($query2);
+$stmt->execute();
+$result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,13 +42,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   
-    <a href="index.php"> <h3 style="text-align:center; float:left; margin-left: 47%;">BioskopID</h3> </a>
-    <a href="Register.php" style="float:left; margin-left: 500px;"> <text class="text-primary">Sign Up</text> </a>
-    <a href="Ticketing.php" style="float:left; margin-left: 30px;"> <text class="text-secondary">Login</text> </a>
-    <div style="clear: both;"></div>
+
     <!--NAVBAR-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,11 +65,13 @@
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
             </ul>
+            <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
+            <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>
         </div>
         </nav>
 
     <!-- ISIAN PERTAMA-->
-    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" style="height:40%; width: 60%; text-align: center; left: 300px;">
+    <!-- <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" style="height:40%; width: 60%; text-align: center; left: 300px;">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
@@ -85,20 +109,56 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <br><br><br>
+    <br><br><br> -->
     <!--COMING SOON-->
-    <h1 style="text-align: center;">COMING SOON</h1>
-    <br>
-    <div id="comingsoon">
-      <div id="kotak1" style="float:left; width:250px; height:300px; background-color: grey; margin-left: 90px;"></div>
-      <div id="kotak" style="float:left; width:250px; height:300px; background-color: grey; margin-left: 30px;"></div>
-      <div id="kotak" style="float:left; width:250px; height:300px; background-color: grey; margin-left: 30px;"></div>
-      <div id="kotak" style="float:left; width:250px; height:300px; background-color: grey; margin-left: 30px;"></div>
-      <div id="kotak" style="float:left; width:250px; height:300px; background-color: grey; margin-left: 30px;"></div>
-    </div>
+
+ 
     
-    <div style="clear:both;"></div>
-    <br>
+    <div id="comingsoon" class="container mt-5">
+    <form method="POST">
+            <div class="input-group col-4 ml-auto">
+                <input type="text" class="form-control mr-1" name="keyword" placeholder="Search by Name">
+                <button type="submit" class="btn btn-warning" name="btnsearch">Search</button>
+            </div>
+        </form>
+    <h1 style="text-align: center;">COMING SOON</h1>
+    <div class="row text-dark d-flex justify-content-center flex-wrap">
+ 
+        <?php
+            foreach ($result as $key => $value){
+                echo "<form method='post'>";
+                    echo "<div class='card col-xs-2 m-4' style='width: 18rem'>";
+                    echo"<img class= 'card-img-top' src='poster/$value[poster]'>";
+                    echo "<div class='card-body'>";
+                    echo "<h5 class='card-title'>$value[judul]</h5>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='addtocart' value ='$value[id_film]'>Book Ticket</button>";
+                    // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
+                    echo"</div>";
+                    echo"</div>";
+                    echo "</form>";
+            }
+        ?>
+    </div>
+
+    <h1 style="text-align: center;">Now Playing</h1>
+    <div class="row text-dark d-flex justify-content-center flex-wrap">
+    <?php
+            foreach ($result2 as $key => $value){
+                echo "<form method='post'>";
+                    echo "<div class='card col-xs-2 m-4' style='width: 18rem'>";
+                    echo"<img class= 'card-img-top' src='poster/$value[poster]'>";
+                    echo "<div class='card-body'>";
+                    echo "<h5 class='card-title'>$value[judul]</h5>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='addtocart' value ='$value[id_film]'>Book Ticket</button>";
+                    // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
+                    echo"</div>";
+                    echo"</div>";
+                    echo "</form>";
+            }
+        ?>
+    </div>
+    </div>
+
 
   </body>
   
