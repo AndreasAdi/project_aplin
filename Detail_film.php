@@ -11,6 +11,9 @@
     $stmt->execute();
     $resultcast = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    if(isset($_POST['select'])){
+        header('Location: Pilih_Jadwal.php?idCabang='.$_POST['select'].'&idFilm='.$_GET['idfilm'].'');
+    }
 ?>
 <!doctype html>
 <html lang="en">

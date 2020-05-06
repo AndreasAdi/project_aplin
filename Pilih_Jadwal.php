@@ -1,16 +1,13 @@
 <?php
     session_start();
     include_once "DB/database.php";
-    $querySelectedFilm="SELECT * FROM film WHERE id_film=$_GET[idfilm]";
-    $stmt = $db->prepare($querySelectedFilm);
+    $querySelectJadwal="SELECT * FROM jadwal WHERE id_cabang=$_GET[idCabang] AND id_film=$_GET[idFilm]";
+    $stmt= $db->prepare($querySelectJadwal);
     $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $querySelectedFilmCast="SELECT * FROM filmcast WHERE id_film=$_GET[idfilm]";
-    $stmt = $db->prepare($querySelectedFilmCast);
-    $stmt->execute();
-    $resultcast = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+    $resultJadwal=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(isset($_POST['selectJadwal'])){
+        header("Location: Seat.php?idJadwal=".$_POST['selectJadwal']."&idStudio=".$_POST['studio']."&idFilm=".$_GET['idFilm']."");
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,22 +47,27 @@
                 <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
             </div>
         </nav>
+        <h1>Pilih Jadwal</h1>
       <div class="container mt-5">
             <form method="post">
                 <div class="container mt-5">
                     <table class="table">
                         <thead>
-                           <th>Nama</th>
+                           <th>Studio</th>
+                           <th>Waktu</th>
                            <th>Select</th>
                         </thead>
                         <tbody>
                             <?php
-                                foreach ($result as $key => $value) {
+                                foreach ($resultJadwal as $key => $value) {
                                     echo"
                                         <tr>
-                                            <td>$value[nama_cabang]</td>
-                                            <td><button class='btn btn-primary' name='select' value='$value[id_cabang]'>Select</button></td>
-                                        </tr>
+                                            <td>$value[id_studio]</td>
+                                            <td>$value[waktu]</td>  
+                                            <td><button class='btn btn-primary' name='selectJadwal' value='$value[id_jadwal]'>Select</button>
+                                                <input type='hidden' value='$value[id_studio]' name='studio'>
+                                            </td>
+                                            </tr>
                                     ";
                                 }
                             ?>
