@@ -20,9 +20,10 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $db->prepare($query2);
 $stmt->execute();
 $result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if(isset($_POST['btnbook'])){
+    header("Location: Detail_film.php?idfilm=".$_POST['btnbook']."");
+}
 ?>
-
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -131,7 +132,7 @@ $result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     echo"<img class= 'card-img-top' src='poster/$value[poster]'>";
                     echo "<div class='card-body'>";
                     echo "<h5 class='card-title'>$value[judul]</h5>";
-                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='addtocart' value ='$value[id_film]'>Book Ticket</button>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnbook' value ='$value[id_film]'><b>Book Ticket</b></button>";
                     // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
                     echo"</div>";
                     echo"</div>";
@@ -149,7 +150,7 @@ $result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     echo"<img class= 'card-img-top' src='poster/$value[poster]'>";
                     echo "<div class='card-body'>";
                     echo "<h5 class='card-title'>$value[judul]</h5>";
-                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='addtocart' value ='$value[id_film]'>Book Ticket</button>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnplay' value ='$value[id_film]'><b>Book Ticket</b></button>";
                     // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
                     echo"</div>";
                     echo"</div>";
