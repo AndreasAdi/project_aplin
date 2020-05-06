@@ -5,7 +5,7 @@
     if(isset($_POST['add_jadwal'])){
         header('Location: addjadwal.php');
     }
-    $query = "SELECT j.id_jadwal AS id_jadwal,c.nama_cabang AS nama_cabang,s.nama_studio AS nama_studio,f.judul AS judul_film,j.waktu AS waktu,j.status AS status FROM cabang c, studio s, jadwal j, film f WHERE j.id_studio = s.id_studio AND j.id_film = f.id_film AND c.id_cabang = j.id_cabang";
+    $query = "SELECT j.id_jadwal AS id_jadwal,c.nama_cabang AS nama_cabang,s.nama_studio AS nama_studio,f.judul AS judul_film,j.jam AS jam,j.tanggal AS tanggal,j.status AS status FROM cabang c, studio s, jadwal j, film f WHERE j.id_studio = s.id_studio AND j.id_film = f.id_film AND c.id_cabang = j.id_cabang";
     // Query Bare! Jangan digunakan kalau TERIMA DATA DARI CLIENT!
     $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -82,7 +82,8 @@
                                 <th>Nama film</th>
                                 <th>Cabang</th>
                                 <th>Studio</th>
-                                <th>Waktu</th>
+                                <th>Tanggal</th>
+                                <th>Jam</th>
                                 <th>Status</th>
                                 <th>Update</th>
                                 <th>Delete</th>
@@ -98,7 +99,8 @@
                                 <td><?php echo $value["judul_film"];?></td>
                                 <td><?php echo $value["nama_cabang"];?></td>
                                 <td><?php echo $value["nama_studio"];?></td>
-                                <td><?php echo $value["waktu"];?></td>
+                                <td><?php echo $value["tanggal"];?></td>
+                                <td><?php echo $value["jam"];?></td>
                                 <?php
                                     if($value["status"]==0){
                                         $status ="Coming Soon";

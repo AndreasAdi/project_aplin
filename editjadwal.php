@@ -3,13 +3,14 @@
     session_start();
     
     if(isset($_POST['btnedit'])){
-        $queryupdate="UPDATE jadwal set id_film= :id_film, id_cabang = :id_cabang,id_studio =:id_studio,waktu =:waktu,status =:status where id_jadwal = $_GET[jadwal]";
+        $queryupdate="UPDATE jadwal set id_film= :id_film, id_cabang = :id_cabang,id_studio =:id_studio,jam =:jam,tanggal =:tanggal,status =:status where id_jadwal = $_GET[jadwal]";
         try {
             $stmt=$db->prepare($queryupdate);
             $stmt->bindValue(':id_film',$_POST['film'],PDO::PARAM_STR);
             $stmt->bindValue(':id_cabang',$_POST['cabang'],PDO::PARAM_STR);
             $stmt->bindValue(':id_studio',$_POST['studio'],PDO::PARAM_STR);
-            $stmt->bindValue(':waktu',$_POST["waktu"],PDO::PARAM_STR);
+            $stmt->bindValue(':tanggal',$_POST["tanggal"],PDO::PARAM_STR);
+            $stmt->bindValue(':jam',$_POST["jam"],PDO::PARAM_STR);
             $stmt->bindValue(':status',$_POST['status'],PDO::PARAM_STR);
             $result=$stmt->execute();
             header('Location: jadwal.php');
@@ -120,8 +121,12 @@ if(isset($_POST['btncancel'])){
 
 
                 <div class="form-group">
-                <label for="cast">Waktu</label><br>
-                <input class="input-group date" type="datetime-local" id="waktu" name="waktu">
+                <label for="cast">Tanggal</label><br>
+                <input class="input-group date" type="date" id="tanggal" name="tanggal">
+                </div>
+                <div class="form-group">
+                <label for="cast">Jam</label><br>
+                <input class="input-group " id="jam" type ="time" name="jam">
                 </div>
 
                 <div class="form-group">

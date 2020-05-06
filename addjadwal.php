@@ -3,13 +3,14 @@
     session_start();
     
     if(isset($_POST['btnadd'])){
-        $queryinsert='INSERT INTO jadwal(id_film,id_cabang,id_studio,waktu,status) VALUES(:id_film,:id_cabang,:id_studio,:waktu,:status)';
+        $queryinsert='INSERT INTO jadwal(id_film,id_cabang,id_studio,tanggal,jam,status) VALUES(:id_film,:id_cabang,:id_studio,:tanggal,:jam,:status)';
         try {
             $stmt=$db->prepare($queryinsert);
             $stmt->bindValue(':id_film',$_POST['film'],PDO::PARAM_STR);
             $stmt->bindValue(':id_cabang',$_POST["cabang"],PDO::PARAM_STR);
             $stmt->bindValue(':id_studio',$_POST['studio'],PDO::PARAM_STR);
-            $stmt->bindValue(':waktu',$_POST["waktu"],PDO::PARAM_STR);
+            $stmt->bindValue(':tanggal',$_POST["tanggal"],PDO::PARAM_STR);
+            $stmt->bindValue(':jam',$_POST["jam"],PDO::PARAM_STR);
             $stmt->bindValue(':status',$_POST['status'],PDO::PARAM_STR);
             $result=$stmt->execute();
             header('Location: jadwal.php');
@@ -113,8 +114,12 @@ if(isset($_POST['btncancel'])){
 
 
                 <div class="form-group">
-                <label for="cast">Waktu</label><br>
-                <input class="input-group date" type="datetime-local" id="waktu" name="waktu">
+                <label for="cast">Tanggal</label><br>
+                <input class="input-group date" type="date" id="tanggal" name="tanggal">
+                </div>
+                <div class="form-group">
+                <label for="cast">Jam</label><br>
+                <input class="input-group " id="jam" type ="time" name="jam">
                 </div>
 
                 <div class="form-group">
@@ -145,9 +150,13 @@ if(isset($_POST['btncancel'])){
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
-
+ <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script src="timepicker.js"></script> -->
 <script>
+
+    $(document).ready(function(){
+        $("#jam").timepicker(option);
+    })
 
     $("#cabang").change(function(){
         loadstudio($(this).val());
