@@ -54,9 +54,10 @@
             </div>
         </nav>
     <h1><?php echo "<b>$result[judul]</b>"?></h1> <br>
-    <img style='width: 400px; height: 500px;' src='poster/<?php echo "$result[poster]"?>'>
+    <!-- <img style='width: 400px; height: 500px;' src='poster/<?php echo "$result[poster]"?>'> -->
         <!--Deskripsi Dan Cast -->
-    <div>
+    <div class="detailFilm" style="float:left;">
+        <img style='width: 400px; height: 500px;' src='poster/<?php echo "$result[poster]"?>'>
         <h3>Deskripsi</h3>
         <b><?php echo $result['deskripsi'];?></b>  
         <h3>Cast</h3>
