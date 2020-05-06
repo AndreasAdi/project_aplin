@@ -50,27 +50,6 @@
                 <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
             </div>
         </nav>
-    <h1><?php echo "<b>$result[judul]</b>"?></h1> <br>
-    <img style='width: 400px; height: 500px;' src='poster/<?php echo "$result[poster]"?>'>
-        <!--Deskripsi Dan Cast -->
-    <div>
-        <h3>Deskripsi</h3>
-        <b><?php echo $result['deskripsi'];?></b>  
-        <h3>Cast</h3>
-        <b><?php 
-            foreach ($resultcast as $key => $value) {
-               echo $value['nama_cast'];
-            }
-        ?></b>
-    </div>
-    <!-- Buat Nampilin Bioskop e -->
-    <h3>Watch On</h3>
-    <?php
-            $querySelectJadwal="SELECT * FROM jadwal WHERE id_film=$_GET[idfilm]";
-            $stmt=$db->prepare($querySelectJadwal);
-            $stmt->execute();
-            $resultJadwal = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    ?>
       <div class="container mt-5">
             <form method="post">
                 <div class="container mt-5">
@@ -81,19 +60,13 @@
                         </thead>
                         <tbody>
                             <?php
-                                foreach ($resultJadwal as $key => $value) {
-                                    $querySelectCabang="SELECT * FROM cabang WHERE kota_cabang='$_SESSION[kota]' AND id_cabang=$value[id_cabang]";
-                                    $stmt=$db->prepare($querySelectCabang);
-                                    $stmt->execute();
-                                    $resultCabang = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach ($resultCabang as $key => $value) {
-                                        echo"
-                                            <tr>
-                                                <td>$value[nama_cabang]</td>
-                                                <td><button class='btn btn-primary' name='select' value='$value[id_cabang]'>Select</button></td>
-                                            </tr>
-                                        ";
-                                    }
+                                foreach ($result as $key => $value) {
+                                    echo"
+                                        <tr>
+                                            <td>$value[nama_cabang]</td>
+                                            <td><button class='btn btn-primary' name='select' value='$value[id_cabang]'>Select</button></td>
+                                        </tr>
+                                    ";
                                 }
                             ?>
                         </tbody>
