@@ -12,7 +12,7 @@
     $resultcast = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if(isset($_POST['select'])){
-        header('Location: Pilih_Jadwal.php?idCabang='.$_POST['select'].'&idFilm='.$_GET['idfilm'].'');
+        header('Location: Pilih_Jadwal.php?nama='.$_POST['cabang'].'&idCabang='.$_POST['select'].'&idFilm='.$_GET['idfilm'].'&judul='.$_POST['judul'].'');
     }
 ?>
 <!doctype html>
@@ -28,6 +28,7 @@
     <title>Hello, world!</title>
   </head>
   <body>
+      <form method='post'>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -53,7 +54,9 @@
                 <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
             </div>
         </nav>
-    <h1><?php echo "<b>$result[judul]</b>"?></h1> <br>
+    <h1><?php echo "<b>$result[judul]</b>"?>
+         <input type="hidden" name='judul' value= '<?php echo $result['judul'];?>'>   
+    </h1> <br>
     <!-- <img style='width: 400px; height: 500px;' src='poster/<?php echo "$result[poster]"?>'> -->
         <!--Deskripsi Dan Cast -->
     <div class="detailFilm" style="float:left;">
@@ -76,7 +79,6 @@
             $resultJadwal = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
       <div class="container mt-5">
-            <form method="post">
                 <div class="container mt-5">
                     <table class="table">
                         <thead>
@@ -94,7 +96,9 @@
                                         echo"
                                             <tr>
                                                 <td>$value[nama_cabang]</td>
-                                                <td><button class='btn btn-primary' name='select' value='$value[id_cabang]'>Select</button></td>
+                                                <td>
+                                                <input type='hidden' value=$value[nama_cabang] name='cabang'>
+                                                <button class='btn btn-primary' name='select' value='$value[id_cabang]'>Select</button></td>
                                             </tr>
                                         ";
                                     }
@@ -103,8 +107,8 @@
                         </tbody>
                     </table>
                 </div>
-            </form>
         </div>
+    </form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

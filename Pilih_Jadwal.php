@@ -6,7 +6,7 @@
     $stmt->execute();
     $resultJadwal=$stmt->fetchAll(PDO::FETCH_ASSOC);
     if(isset($_POST['selectJadwal'])){
-        header("Location: Seat.php?idJadwal=".$_POST['selectJadwal']."&idStudio=".$_POST['studio']."&idFilm=".$_GET['idFilm']."");
+        header("Location: Seat.php?nama=".$_GET['nama']."&idJadwal=".$_POST['selectJadwal']."&idStudio=".$_POST['studio']."&idFilm=".$_GET['idFilm']."&tgl=".$_POST['tgl']."&jam=".$_POST['jam']."&judul=".$_GET['judul']."");
     }
 ?>
 <!doctype html>
@@ -54,7 +54,8 @@
                     <table class="table">
                         <thead>
                            <th>Studio</th>
-                           <th>Waktu</th>
+                           <th>Tanggal</th>
+                           <th>Jam</th>
                            <th>Select</th>
                         </thead>
                         <tbody>
@@ -63,9 +64,12 @@
                                     echo"
                                         <tr>
                                             <td>$value[id_studio]</td>
-                                            <td>$value[waktu]</td>  
+                                            <td>$value[tanggal]</td>
+                                            <td>$value[jam]</td>
                                             <td><button class='btn btn-primary' name='selectJadwal' value='$value[id_jadwal]'>Select</button>
                                                 <input type='hidden' value='$value[id_studio]' name='studio'>
+                                                <input type='hidden' value='$value[tanggal]' name='tgl'>
+                                                <input type='hidden' value='$value[jam]' name='jam'>
                                             </td>
                                             </tr>
                                     ";

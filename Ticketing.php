@@ -23,6 +23,7 @@
         if($cekpass){
           session_start();
           $_SESSION['user']=$data['Nama'];
+          $_SESSION['email']=$data['Email'];
           $_SESSION['kota']=$data['City'];
           header("Location: LoginSuccess.php");
         }
