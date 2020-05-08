@@ -55,6 +55,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="studio.php">Studio</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="konfirmasi.php">Konfirmasi Pembayaran</a>
+                    </li>
                 </ul>
                 <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
             </div>

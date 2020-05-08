@@ -12,6 +12,13 @@ session_start();
     $stmt->bindValue(':email',$_POST['Email'],PDO::PARAM_STR);
     $stmt->bindValue(':studio',$_POST['Studio'],PDO::PARAM_INT);
     $result=$stmt->execute();
+    $seat = explode(',',$_POST['seat']);
+    for ($i=0; $i < count($seat)-1; $i++) {
+        $query="UPDATE seat
+        SET status = 1
+        WHERE nama = '$seat[$i]' and id_jadwal = '$_POST[jadwal]'";
+        $stmt = $db->exec($query);
+    }
     if($result){
         echo "sukses";
     }

@@ -67,16 +67,13 @@
               <input type='hidden' id='jam' value= $_GET[jam]>
               <input type='hidden' id='email' value= $_SESSION[email]>
               <input type='hidden' id='studio' value= $_GET[idStudio]>
+              <input type='hidden' id='jadwal' value= $_GET[idJadwal]>
               <p> $_GET[nama] - Studio $_GET[idStudio]  <br>
                   Date: <b>$_GET[tgl]</b><br>
                   Time: <b>$_GET[jam]</b><br>
                   Snacks: <b>Without Snacks</b> <br>
                   <b>Rp. 50.0000/Seat</b>
               </p>
-              <div class='form-group'>
-                  <label for='exampleFormControlFile1'>Upload Bukti Bayar</label>
-                  <input type='file' class='form-control-file' name='exampleFormControlFile1'>
-              </div>
               
               <button type='button' name='btnconfirm' id='btnconfirm' class='btn btn-primary'>Confirm</button>
                 ";
@@ -92,8 +89,22 @@
     
     <div id='container' name="kursicontainer" style="width: 650px; height: 600px; margin-left: 30px; float:left;">
       <div name="layar" style="background-color: black; width: 300px; height: 40px; margin-left: 160px; color: white; text-align: center;">SCREEN</div>
+      <?php
+        $query = "SELECT * FROM seat where id_jadwal = $_GET[idJadwal]";
+        // Query Bare! Jangan digunakan kalau TERIMA DATA DARI CLIENT!
+        $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as $key => $value) {
+          //ini tolong dibuat rapih layout seatnya
+          if ($value['status'] == 0) {
+              echo "<button id='kursi' type='submit' name='kursi' style='text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 20px; margin-top: 10px; float:left; background-color:green;' value='$value[nama]'> $value[nama] </button>";
+          }
+          else {
+            echo "<button id='kursi' type='submit' name='kursi' style='text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 20px; margin-top: 10px; float:left; background-color:red;' value='$value[nama]'> $value[nama] </button>";
+          }
+        }
+      ?>
 
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1A'> 1A </button>
+      <!-- <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1A'> 1A </button>
       <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1B'> 1B </button>
       <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='1C'> 1C </button>
       <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1D'> 1D </button>
@@ -164,7 +175,7 @@
       <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8F'> 8F</button>
       <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='8G'> 8G</button>
       <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8H'> 8H</button>
-    
+     -->
     </div>
     
     <div style="clear:both"></div>
@@ -176,16 +187,19 @@
         var seat='';
         var ctr=0;
 
-        $('#container').children('#kursi').each(function () {
-          $(this).css('background-color','green');
-        });
+        // $('#container').children('#kursi').each(function () {
+        //   $(this).css('background-color','green');
+        // });
         
         $('#container').on('click','#kursi',function(e){
           e.preventDefault();
-          $(this).css('background-color','red');
-          selectedSeat[ctr]=$(this).attr('value');
-          seat=$(this).attr('value')+','+seat;
-          ctr++;
+          if ($(this).css('background-color') == "rgb(0, 128, 0)") {
+            $(this).css('background-color','red');
+            selectedSeat[ctr]=$(this).attr('value');
+            seat=$(this).attr('value')+','+seat;
+            ctr++;
+          }
+          
         });
         $('#bodycard').on('click','#btnconfirm',function(e){
           e.preventDefault();
@@ -200,13 +214,15 @@
                 seat : seat,
                 harga : harga,
                 Email : $('#email').val(),
-                Studio : $('#studio').val()
+                Studio : $('#studio').val(),
+                jadwal : $('#jadwal').val()
               }, // data yang dikirim
               success : function(res){
                 // window.location.replace("http://www.w3schools.com")
                 if(res=='sukses'){
                   alert('Berhasil');
                   seat='';
+                  location.replace("confirmbayar.php");
                 }else{
                   alert('gagal');
                 }
