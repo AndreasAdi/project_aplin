@@ -6,7 +6,11 @@
     $stmt->execute();
     $resultJadwal=$stmt->fetchAll(PDO::FETCH_ASSOC);
     if(isset($_POST['selectJadwal'])){
-        header("Location: Seat.php?nama=".$_GET['nama']."&idJadwal=".$_POST['selectJadwal']."&idStudio=".$_POST['studio']."&idFilm=".$_GET['idFilm']."&tgl=".$_POST['tgl']."&jam=".$_POST['jam']."&judul=".$_GET['judul']."");
+        $querySelectDetailJadwal="SELECT * FROM jadwal WHERE id_jadwal=$_POST[selectJadwal]";
+        $stmt=$db->prepare($querySelectDetailJadwal);
+        $stmt->execute();
+        $result=$stmt->fetch(PDO :: FETCH_ASSOC);
+        header("Location: Seat.php?nama=".$_GET['nama']."&idJadwal=".$_POST['selectJadwal']."&idStudio=".$result['id_studio']."&idFilm=".$_GET['idFilm']."&tgl=".$result['tanggal']."&jam=".$result['jam']."&judul=".$_GET['judul']."");
     }
 ?>
 <!doctype html>
@@ -67,9 +71,6 @@
                                             <td>$value[tanggal]</td>
                                             <td>$value[jam]</td>
                                             <td><button class='btn btn-primary' name='selectJadwal' value='$value[id_jadwal]'>Select</button>
-                                                <input type='hidden' value='$value[id_studio]' name='studio'>
-                                                <input type='hidden' value='$value[tanggal]' name='tgl'>
-                                                <input type='hidden' value='$value[jam]' name='jam'>
                                             </td>
                                             </tr>
                                     ";

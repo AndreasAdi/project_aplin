@@ -1,6 +1,10 @@
 <?php
       session_start();
       include_once "DB/database.php";
+      $selectGambarFilm="SELECT * FROM film WHERE id_film=$_GET[idFilm]";
+      $stmt=$db->prepare($selectGambarFilm);
+      $stmt->execute();
+      $resGambar=$stmt->fetch(PDO :: FETCH_ASSOC);
 ?>
 <!doctype html>
 <html lang="en">
@@ -56,7 +60,7 @@
     <br><br>
       <div class="form-group col-md-6">
         <div class="card" style="width: 17rem;">
-          <img class="card-img-top" src="transformer.jpg" alt="Card image cap" style="width: 260px; height: 350px; margin-left: 6px;"> 
+          <img class="card-img-top" src='poster/<?php echo $resGambar['poster'];?>' alt="Card image cap" style="width: 260px; height: 350px; margin-left: 6px;"> 
           <div class="card-body" id="bodycard">
             <?php
               echo"

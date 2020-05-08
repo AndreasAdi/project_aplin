@@ -12,7 +12,11 @@
     $resultcast = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if(isset($_POST['select'])){
-        header('Location: Pilih_Jadwal.php?nama='.$_POST['cabang'].'&idCabang='.$_POST['select'].'&idFilm='.$_GET['idfilm'].'&judul='.$_POST['judul'].'');
+        $queryAmbilNamaCabang="SELECT * FROM cabang WHERE id_cabang=$_POST[select]";
+        $stmt=$db->prepare($queryAmbilNamaCabang);
+        $stmt->execute();
+        $result=$stmt->fetch(PDO::FETCH_ASSOC);
+        header('Location: Pilih_Jadwal.php?nama='.$result['nama_cabang'].'&idCabang='.$_POST['select'].'&idFilm='.$_GET['idfilm'].'&judul='.$_POST['judul'].'');
     }
 ?>
 <!doctype html>
@@ -97,7 +101,6 @@
                                             <tr>
                                                 <td>$value[nama_cabang]</td>
                                                 <td>
-                                                <input type='hidden' value=$value[nama_cabang] name='cabang'>
                                                 <button class='btn btn-primary' name='select' value='$value[id_cabang]'>Select</button></td>
                                             </tr>
                                         ";
