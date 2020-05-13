@@ -1,0 +1,10 @@
+#bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: blur(70px) opacity(50%);
+}
+
+body {
+    background-color: rgb(61, 61, 61);
+}

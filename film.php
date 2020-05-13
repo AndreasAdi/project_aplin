@@ -128,7 +128,7 @@
                             ?>
                             <tr>
                                 <td><?php echo $value["id_film"];?></td>
-                                <td><?php echo "<img src='poster/$value[poster]' style ='height : 10%'>";?></td>
+                                <td><?php echo "<img src='poster/$value[poster]' style ='width : 50%'>";?></td>
                                 <td><?php echo $value["judul"];?></td>
                                 <td><?php echo $value["tahun"];?></td>
                                 <td><?php echo $cast;?></td>
