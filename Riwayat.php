@@ -1,5 +1,5 @@
 <?php
-    if(!isset($_SESSION['Email'])){
+    if(!isset($_SESSION['email'])){
         header("Location: Ticketing.php");
     }
 
