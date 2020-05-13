@@ -59,25 +59,6 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="List_Film.php">List Film</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Ticketing.php">Ticketing</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Riwayat.php">Riwayat</a>
-            </li>
-            </ul>
-            <a href="Register.php"> <text class="text-primary mr-2">Sign Up</text> </a>
-           <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>  
-        </div>
         </nav>
 
     <!-- ISIAN PERTAMA-->

@@ -1,6 +1,10 @@
 <?php
  session_start();
  include "DB/database.php";
+ if(!isset($_SESSION['Email'])){
+    header("Location: Ticketing.php");
+}
+
 if(isset($_POST['keyword'])){
     header("Location: list_film.php?search=$_POST[keyword]");
 }
@@ -60,16 +64,13 @@ if(isset($_POST['btnbook'])){
                 <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Ticketing.php">Ticketing</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
             </ul>
             <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
             <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>
         </div>
-        </nav>
+    </nav>
 
     <!-- ISIAN PERTAMA-->
     <!-- <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" style="height:40%; width: 60%; text-align: center; left: 300px;">

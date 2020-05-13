@@ -1,6 +1,10 @@
 <?php
     session_start();
     include_once "DB/database.php";
+    if(!isset($_SESSION['Email'])){
+        header("Location: Ticketing.php");
+    }
+
     $querySelectJadwal="SELECT * FROM jadwal WHERE id_cabang=$_GET[idCabang] AND id_film=$_GET[idFilm]";
     $stmt= $db->prepare($querySelectJadwal);
     $stmt->execute();
@@ -28,29 +32,26 @@
   <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="List_Film.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="snack.php">Pre-Order Snack</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="DaftarFilm.php">Beli Tiket</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Riwayat.php">Riwayat</a>
-                    </li>
-                </ul>
-                <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
-            </div>
-        </nav>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="List_Film.php">List Film</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Riwayat.php">Riwayat</a>
+            </li>
+            </ul>
+            <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
+            <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>
+        </div>
+    </nav>
         <h1>Pilih Jadwal</h1>
       <div class="container mt-5">
             <form method="post">

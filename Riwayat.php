@@ -1,3 +1,9 @@
+<?php
+    if(!isset($_SESSION['Email'])){
+        header("Location: Ticketing.php");
+    }
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -33,14 +39,13 @@
                 <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Ticketing.php">Ticketing</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
             </ul>
+            <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
+            <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>
         </div>
-        </nav>
+    </nav>
 
     <!-- ISIAN PERTAMA-->
     <br>

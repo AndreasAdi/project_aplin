@@ -1,5 +1,6 @@
 <?php
     include "DB/database.php";
+    include("DB/function.php");
     session_start();
 
     $query = "SELECT * FROM pendingticket where StatusBayar = 'Pending'";
@@ -13,6 +14,17 @@
         SET StatusBayar = 'Confirmed'
         WHERE id_tiket = '$id'";
         $db->exec($queryupdate);
+        
+        $querySelectEmailUser="SELECT * FROM pendingticket WHERE id_tiket = $id";
+        $stmt=$db->prepare($querySelectEmailUser);
+        $stmt->execute();
+        $resultEmail = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $querySelectJudul="SELECT * FROM film WHERE id_film = $resultEmail[id_film]";
+        $stmt=$db->prepare($querySelectJudul);
+        $stmt->execute();
+        $resultJudul = $stmt->fetch(PDO::FETCH_ASSOC);
+        sendEmail($resultEmail['Email'], "Your Receipt for ".$resultJudul['judul']."","Judul: $resultJudul[judul]<br> Tanggal: $resultEmail[tanggal]<br> Jam: $resultEmail[jam]<br> Studio: $resultEmail[studio]<br> Seat: $resultEmail[Seat]<br> Harga: $resultEmail[Harga]");
     }
     if(isset($_POST['reject'])){
         $id = $_POST['reject'];
@@ -86,8 +98,6 @@
 
         <div class="container mt-5">
             <form method="post">
-                <button class="btn btn-primary" type="submit" name="addsnack">Add</button>
-
                 <div class="container mt-5">
                     <table class="table">
                         <thead>

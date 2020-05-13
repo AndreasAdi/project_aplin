@@ -1,6 +1,10 @@
 <?php
       session_start();
       include_once "DB/database.php";
+      if(!isset($_SESSION['Email'])){
+        header("Location: Ticketing.php");
+    }
+
       $selectGambarFilm="SELECT * FROM film WHERE id_film=$_GET[idFilm]";
       $stmt=$db->prepare($selectGambarFilm);
       $stmt->execute();
@@ -30,13 +34,13 @@
     <a href="Register.php" style="float:left; margin-left: 500px;"> <text class="text-secondary">Hello, User!</text> </a>
     <div style="clear: both;"></div>
     <!--NAVBAR-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="Index.php">BIOSKOPID</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" name="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="List_Film.php">List Film</a>
@@ -45,14 +49,13 @@
                 <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Ticketing.php">Ticketing</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
             </ul>
+            <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
+            <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>
         </div>
-        </nav>
+    </nav>
 
     <!-- ISIAN PERTAMA-->
     <form method='post'>
@@ -107,79 +110,6 @@
           }
         }
       ?>
-
-      <!-- <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1A'> 1A </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1B'> 1B </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='1C'> 1C </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1D'> 1D </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1E'> 1E </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1F'> 1F </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='1G'> 1G </button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='1H'> 1H </button>
-
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='2A'> 2A</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='2B'> 2B</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='2C'> 2C</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='2D'> 2D</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='2E'> 2E</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='2F'> 2F</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='2G'> 2G</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='2H'> 2H</button>
- 
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='3A'> 3A</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='3B'> 3B</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='3C'> 3C</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='3D'> 3D</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='3E'> 3E</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='3F'> 3F</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='3G'> 3G</button>
-      <button id="kursi" name="kursi" type='submit' style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='3H'> 3H</button>
-
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='4A'> 4A</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='4B'> 4B</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='4C'> 4C</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='4D'> 4D</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='4E'> 4E</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='4F'> 4F</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='4G'> 4G</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='4H'> 4H</button>
-
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='5A'> 5A</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='5B'> 5B</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='5C'> 5C</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='5D'> 5D</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='5E'> 5E</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='5F'> 5F</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='5G'> 5G</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='5H'> 5H</button>
-
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='6A'> 6A</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='6B'> 6B</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='6C'> 6C</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='6D'> 6D</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='6E'> 6E</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='6F'> 6F</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='6G'> 6G</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='6H'> 6H</button>
-  
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='7A'> 7A</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='7B'> 7B</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='7C'> 7C</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='7D'> 7D</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='7E'> 7E</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='7F'> 7F</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='7G'> 7G</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='7H'> 7H</button>
-
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8A'> 8A</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8B'> 8B</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='8C'> 8C</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8D'> 8D</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8E'> 8E</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8F'> 8F</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 40px; margin-top: 10px; float:left;" value='8G'> 8G</button>
-      <button id="kursi" type='submit' name="kursi" style="text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 10px; margin-top: 10px; float:left;" value='8H'> 8H</button>
-     -->
     </div>
     
     <div style="clear:both"></div>
