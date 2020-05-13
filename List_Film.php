@@ -92,7 +92,7 @@ if(isset($_POST['btnbook'])){
             foreach ($result as $key => $value){
                 echo "<form method='post'>";
                     echo "<div class='card col-xs-2 m-4' style='width: 18rem'>";
-                    echo"<img class= 'card-img-top' src='poster/$value[poster]'>";
+                    echo"<a href ='detail_film.php?idfilm= $value[id_film]'><img class= 'card-img-top' src='poster/$value[poster]'></a>";
                     echo "<div class='card-body'>";
                     echo "<h5 class='card-title'>$value[judul]</h5>";
                     echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnbook' value ='$value[id_film]'><b>Book Ticket</b></button>";
