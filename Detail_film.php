@@ -10,16 +10,17 @@
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $querygenre="SELECT nama_genre FROM filmgenre WHERE id_film=$_GET[idfilm]";
-    $stmt = $db->prepare($querygenre);
-    $stmt->execute();
-    $resultgenre = $stmt->fetch(PDO::FETCH_ASSOC);
-
     $querySelectedFilmCast="SELECT * FROM filmcast WHERE id_film=$_GET[idfilm]";
     $stmt = $db->prepare($querySelectedFilmCast);
     $stmt->execute();
     $resultcast = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    $querygenre="SELECT nama_genre FROM filmgenre WHERE id_film = $_GET[idfilm]";
+    $stmt = $db->prepare($querygenre);
+    $stmt->execute();
+    $resultgenre = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
     if(isset($_POST['select'])){
         $queryAmbilNamaCabang="SELECT * FROM cabang WHERE id_cabang=$_POST[select]";
         $stmt=$db->prepare($queryAmbilNamaCabang);
@@ -105,10 +106,9 @@
                         </div>
                         <div>
                         <?php 
-                               
                                foreach ($resultgenre as $key => $value) {
                                    echo "<span class='badge badge-secondary mr-1'>";
-                                   echo $value;
+                                   echo $value["nama_genre"];
                                    echo "</span>";
                            
                                    }                       
