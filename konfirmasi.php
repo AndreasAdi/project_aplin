@@ -21,6 +21,17 @@
         SET StatusBayar = 'Rejected'
         WHERE id_tiket = '$id'";
         $db->exec($queryupdate);
+
+        $queryseat = "SELECT * FROM pendingticket where id_tiket = '$id'";
+        $hasil = $db->query($queryseat)->fetch(PDO::FETCH_ASSOC);
+        $idjadwal = $hasil['id_jadwal'];
+        $seat = explode(',',$hasil['Seat']);
+        for ($i=0; $i < count($seat)-1; $i++) {
+            $query="UPDATE seat
+            SET status = 0
+            WHERE nama = '$seat[$i]' and id_jadwal = '$idjadwal'";
+            $stmt = $db->exec($query);
+        }
         //tambah diubah status seatnya (belum bisa), seharusnya table pendingticket itu isinya id_jadwal bukan id_film
     }
 ?>
@@ -87,6 +98,7 @@
                                 <th>Jam</th>
                                 <th>Seat</th>
                                 <th>Status</th>
+                                <th>Bukti</th>
                                 <th>Harga</th>
                                 <th>Email</th>
                                 <th>Studio</th>
@@ -105,6 +117,12 @@
                                 <td><?php echo $value["jam"];?></td>
                                 <td><?php echo $value["Seat"];?></td>
                                 <td><?php echo $value["StatusBayar"];?></td>
+                                <td><?php if ($value['buktiBayar'] == "-") {
+                                    echo "Belum ada butki";
+                                }
+                                else {
+                                    echo "<img src='bukti/$value[buktiBayar]' width='300px' height='200px'>";
+                                } ?></td>
                                 <td><?php echo number_format($value["Harga"], 0, ',', '.');?></td>
                                 <td><?php echo $value["Email"];?></td>
                                 <td><?php echo $value["studio"];?></td>

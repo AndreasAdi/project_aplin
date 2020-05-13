@@ -1,3 +1,35 @@
+<?php
+include "DB/database.php";
+session_start();
+if (isset($_FILES["bukti"])) {
+    // Kalau dikirim, cek apakah file yang di upload error apa tidak
+    // Error jika diatas 0! 
+    if ($_FILES["bukti"]["error"] == 0) {
+        // Upload file berhasil!
+        var_dump($_FILES['bukti']);
+        $tipefile = explode(".",$_FILES['bukti']['name']);
+
+        $ctr = count($tipefile)-1;
+        $tipefile = $tipefile[$ctr];
+
+        $status = move_uploaded_file($_FILES["bukti"]["tmp_name"], 
+            __DIR__."/bukti/".$_SESSION['email'].".".$tipefile);
+        $nama = $_SESSION['email'].".".$tipefile;
+        if ($status != false) {
+            $queryupdate="UPDATE pendingticket
+            SET buktiBayar = '$nama'
+            WHERE id_tiket = '$_SESSION[id_tiket]'";
+            $db->exec($queryupdate);
+        }
+        header('Location: index.php');
+    } else {
+        // Jika file upload diatas 0 error code nya, maka upload file gagal!
+        echo "Tidak ada file yang diterima oleh server!";
+    }
+}
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -48,11 +80,13 @@
     <div class="alert alert-success" role="alert">
         Berhasil booking tiket, Silahkan melakukan pembayaran
     </div>
+    <form method='post' enctype="multipart/form-data">
     <div class='form-group'>
-        <label for='exampleFormControlFile1'>Upload Bukti Pembayaran</label>
-        <input type='file' class='form-control-file' name='exampleFormControlFile1'>
+        <label>Upload Bukti Pembayaran</label>
+        <input type='file' class='form-control-file' name='bukti'>
         <button type='submit' name='bayar' class='btn btn-primary'>Bayar</button>
     </div>
+    </form>
 </div>
   </body>
   
