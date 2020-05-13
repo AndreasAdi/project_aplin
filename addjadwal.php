@@ -248,7 +248,7 @@ if(isset($_POST['btncancel'])){
                 </div>
                 <div class="form-group">
                 <label for="cast">Jam</label><br>
-                <input class="input-group " id="jam" type ="time" name="jam">
+                <input class="input-group"  type ="time" name="jam">
                 </div>
 
                 <div class="form-group">

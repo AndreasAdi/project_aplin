@@ -1,19 +1,17 @@
 <?php
  session_start();
  include "DB/database.php";
- if(!isset($_SESSION['email'])){
-    header("Location: Ticketing.php");
-}
+ 
 
 if(isset($_POST['keyword'])){
     header("Location: list_film.php?search=$_POST[keyword]");
 }
 if(isset($_GET['search'])){
-    $query = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0 AND f.judul like '%$_GET[search]%' ";
+    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0 AND f.judul like '%$_GET[search]%' ";
     $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1 AND f.judul like '%$_GET[search]%' ";
 }
 else{
-    $query = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0";
+    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0";
     $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
 }
 
@@ -24,8 +22,16 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $db->prepare($query2);
 $stmt->execute();
 $result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 if(isset($_POST['btnbook'])){
-    header("Location: Detail_film.php?idfilm=".$_POST['btnbook']."");
+    if(!isset($_SESSION['email'])){
+        header("Location: Ticketing.php");
+    }
+    else{
+        header("Location: Detail_film.php?idfilm=".$_POST['btnbook']."");
+    }
+   
 }
 ?>
 <!doctype html>
@@ -37,16 +43,12 @@ if(isset($_POST['btnbook'])){
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="jquery-ui.css">
+    <link rel="stylesheet" href="detaifilm.css">
     <title>List Film!</title>
   </head>
-  <body>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  
+  <body">
 
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -72,46 +74,6 @@ if(isset($_POST['btnbook'])){
         </div>
     </nav>
 
-    <!-- ISIAN PERTAMA-->
-    <!-- <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" style="height:40%; width: 60%; text-align: center; left: 300px;">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-            <img src="silver.png" class="d-block w-100" style="width:100%; height:300px;">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Film 1</h5>
-                <p>Deskripsi Film 1</p>
-            </div>
-            </div>
-            <div class="carousel-item">
-            <img src="silver.png" class="d-block w-100" style="width:100%; height:300px;">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Film 2</h5>
-                <p>Deskripsi Film 2</p>
-            </div>
-            </div>
-            <div class="carousel-item">
-            <img src="silver.png" class="d-block w-100" style="width:100%; height:300px;">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Film 3</h5>
-                <p>Deskripsi Film 3</p>
-            </div>
-            </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-    <br><br><br> -->
     <!--COMING SOON-->
 
  
@@ -124,7 +86,7 @@ if(isset($_POST['btnbook'])){
             </div>
         </form>
     <h1 style="text-align: center;">COMING SOON</h1>
-    <div class="row text-dark d-flex justify-content-center flex-wrap">
+    <div id ="card" class="row text-dark d-flex justify-content-center flex-wrap">
  
         <?php
             foreach ($result as $key => $value){
@@ -161,7 +123,30 @@ if(isset($_POST['btnbook'])){
     </div>
     </div>
 
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.js"></script>
+    <script src="jquery.touchSwipe.js"></script>
+    <script src="jquery.film_roll.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/jquery.gsap.min.js"></script>
 
+    <script>
+
+            $(function() {
+            fr = new FilmRoll({
+                container: '#card',
+                configure_load: true,
+                force_buttons :true,
+                pager :false,
+              });
+            });
+
+        
+
+    
+    </script>
   </body>
   
    

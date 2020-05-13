@@ -131,7 +131,7 @@
                     </div>
 
                  <!-- Buat Nampilin Bioskop e -->
-                        <h3 class="mt-4"><b>Watch On</b></h3>
+                        <h4 class="mt-4"><b>Watch On</b></h4>
                         <?php
                              $querySelectJadwal="SELECT * FROM jadwal WHERE id_film=$_GET[idfilm]";
                              $stmt=$db->prepare($querySelectJadwal);
