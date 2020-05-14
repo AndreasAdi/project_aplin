@@ -15,16 +15,38 @@
         WHERE id_tiket = '$id'";
         $db->exec($queryupdate);
         
+        //Select Email User
         $querySelectEmailUser="SELECT * FROM pendingticket WHERE id_tiket = $id";
         $stmt=$db->prepare($querySelectEmailUser);
         $stmt->execute();
         $resultEmail = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        //Select Judul Film
         $querySelectJudul="SELECT * FROM film WHERE id_film = $resultEmail[id_film]";
         $stmt=$db->prepare($querySelectJudul);
         $stmt->execute();
         $resultJudul = $stmt->fetch(PDO::FETCH_ASSOC);
-        sendEmail($resultEmail['Email'], "Your Receipt for ".$resultJudul['judul']."","Judul: $resultJudul[judul]<br> Tanggal: $resultEmail[tanggal]<br> Jam: $resultEmail[jam]<br> Studio: $resultEmail[studio]<br> Seat: $resultEmail[Seat]<br> Harga: $resultEmail[Harga]");
+
+        //Select Nama Studio dan id Cabang
+        $querySelectStudio="SELECT * FROM studio WHERE id_studio=$resultEmail[studio]";
+        $stmt=$db->prepare($querySelectStudio);
+        $stmt->execute();
+        $resultStudio=$stmt->fetch(PDO::FETCH_ASSOC);
+
+        //Select Nama Cabang
+        $querySelectCabang="SELECT * FROM cabang WHERE id_cabang=$resultStudio[id_cabang]";
+        $stmt=$db->prepare($querySelectCabang);
+        $stmt->execute();
+        $resultCabang=$stmt->fetch(PDO::FETCH_ASSOC);
+
+        sendEmail($resultEmail['Email'], "Your Receipt for ".$resultJudul['judul']."","<b>Judul:</b> $resultJudul[judul]<br>
+                                                                                <b>Cabang: </b> $resultCabang[nama_cabang] <br>
+                                                                                <b>Studio: </b> $resultStudio[Nama_Studio]<br> 
+                                                                                <b>Tanggal: </b>$resultEmail[tanggal]<br> 
+                                                                                <b>Jam: </b>$resultEmail[jam]<br> 
+                                                                                <b>Seat: </b>$resultEmail[Seat]<br> 
+                                                                                <b>Grand Total: </b>$resultEmail[Harga]<br>
+                                                                                Thank you for your purchase at <b>Bioskop Id</b>,Enjoy Your Movie.");
     }
     if(isset($_POST['reject'])){
         $id = $_POST['reject'];

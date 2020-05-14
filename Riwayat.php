@@ -69,10 +69,23 @@ include_once "DB/database.php";
                             <?php
                             $ctr=0;
                                 foreach ($resultRiwayat as $key => $value) {
+                                    //Select Judul Film
                                     $querySelectJudul="SELECT * FROM film WHERE id_film=$value[id_film]";
                                     $stmt=$db->prepare($querySelectJudul);
                                     $stmt->execute();
                                     $resultJudul=$stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    //Select Nama Studio dan id Cabang
+                                    $querySelectStudio="SELECT * FROM studio WHERE id_studio=$value[studio]";
+                                    $stmt=$db->prepare($querySelectStudio);
+                                    $stmt->execute();
+                                    $resultStudio=$stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    //Select Nama Cabang
+                                    $querySelectCabang="SELECT * FROM cabang WHERE id_cabang=$resultStudio[id_cabang]";
+                                    $stmt=$db->prepare($querySelectCabang);
+                                    $stmt->execute();
+                                    $resultCabang=$stmt->fetch(PDO::FETCH_ASSOC);
                                     echo "
                                         <tr>
                                             <td>$resultJudul[judul]</td>
@@ -89,7 +102,8 @@ include_once "DB/database.php";
                                                 </button>
                                             </div>
                                             <div class='modal-body'>
-                                                <b>Studio : </b> $value[studio] <br>
+                                                <b>Cabang : </b> $resultCabang[nama_cabang] <br>
+                                                <b>Studio : </b> $resultStudio[Nama_Studio] <br>
                                                 <b>Tanggal: </b> $value[tanggal] <br>
                                                 <b>Jam    : </b> $value[jam] <br>
                                                 <b>Seat   : </b> $value[Seat] <br>
