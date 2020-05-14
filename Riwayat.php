@@ -1,8 +1,14 @@
 <?php
+session_start();
+include_once "DB/database.php";
     if(!isset($_SESSION['email'])){
         header("Location: Ticketing.php");
     }
-
+    $queryRiwayat="SELECT * FROM pendingticket WHERE Email=:email";
+    $stmt = $db->prepare($queryRiwayat);
+    $stmt->bindValue(":email",$_SESSION['email'],PDO :: PARAM_STR);
+    $stmt->execute();
+    $resultRiwayat = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!doctype html>
 <html lang="en">
@@ -49,46 +55,61 @@
 
     <!-- ISIAN PERTAMA-->
     <br>
-    <div class="container">
-    <table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Invoice No</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Judul Film</th>
-            <th scope="col">Total</th>
-            <th scope="col">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>INV0X121</td>
-            <td>23-03-2020</td>
-            <td>DILAN MILEA</td>
-            <td>Rp. 50.000</td>
-            <td>Verified</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>INV0X138</td>
-            <td>27-03-2020</td>
-            <td>TRANSFORMER</td>
-            <td>Rp. 50.000</td>
-            <td>Verified</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>INV0X147</td>
-            <td>04-04-2020</td>
-            <td>MULAN</td>
-            <td>Rp. 50.000</td>
-            <td>Waiting Approval</td>
-        </tr>
-    </tbody>
-    </table>
-</div>
+    <h1>Riwayat</h1>
+      <div class="container mt-5">
+            <form method="post">
+                <div class="container mt-5">
+                    <table class="table">
+                        <thead>
+                           <th>Judul</th>
+                           <th>Status</th>
+                           <th>Detail</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $ctr=0;
+                                foreach ($resultRiwayat as $key => $value) {
+                                    $querySelectJudul="SELECT * FROM film WHERE id_film=$value[id_film]";
+                                    $stmt=$db->prepare($querySelectJudul);
+                                    $stmt->execute();
+                                    $resultJudul=$stmt->fetch(PDO::FETCH_ASSOC);
+                                    echo "
+                                        <tr>
+                                            <td>$resultJudul[judul]</td>
+                                            <td>$value[StatusBayar]</td>
+                                            <td><button class='btn btn-primary' name='btnDetail' id='btnDetail' data-toggle='modal' data-target='#modal$ctr' type='button'>Detail</button></td>
+                                        </tr>
+                                        <div class='modal fade' id='modal$ctr' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                        <div class='modal-dialog' role='document'>
+                                            <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-title' id='exampleModalLabel'>$resultJudul[judul]</h5>
+                                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                                <span aria-hidden='true'>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class='modal-body'>
+                                                <b>Studio : </b> $value[studio] <br>
+                                                <b>Tanggal: </b> $value[tanggal] <br>
+                                                <b>Jam    : </b> $value[jam] <br>
+                                                <b>Seat   : </b> $value[Seat] <br>
+                                                <b>Harga  : </b> Rp.$value[Harga] <br>
+                                            </div>
+                                            <div class='modal-footer'>
+                                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    ";
+                                    $ctr++;
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
   </body>
   
 

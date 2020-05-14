@@ -10,7 +10,6 @@
       //login admin
       if($_POST['email']=="admin@admin.com"){
           header('Location: admin.php');
-          
       }
       else{
        echo "<script>alert('Email Tidak Terdaftar!')</script>";
