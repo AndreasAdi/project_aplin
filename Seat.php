@@ -49,8 +49,15 @@
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
             </ul>
-            <a href="Register.php"> <text class="text-primary">Sign Up</text> </a>
-            <a href="Ticketing.php"> <text class="text-secondary">Login</text> </a>
+            <?php
+                   if(!isset($_SESSION['email'])){
+                   echo "<a href='Register.php'> <text class='text-primary'>Sign Up</text> </a>
+                   <a href='Ticketing.php'> <text class='text-secondary'>Login</text> </a>";
+                }
+                else{
+                    echo"<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
+                }
+                ?>
         </div>
     </nav>
 
