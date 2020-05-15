@@ -33,6 +33,15 @@ if(isset($_POST['btnbook'])){
     }
    
 }
+
+if(isset($_POST['btnplay'])){
+    if(!isset($_SESSION['email'])){
+        header("Location: Ticketing.php");
+    }
+    else{
+        header("Location: Detail_film.php?idfilm=".$_POST['btnplay']."");
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -78,15 +87,35 @@ if(isset($_POST['btnbook'])){
 
  
     
-    <div id="comingsoon" class="container mt-5">
+  
     <form method="POST">
-            <div class="input-group col-4 ml-auto">
+            <div class="input-group col-4 ml-auto mt-5">
                 <input type="text" class="form-control mr-1" name="keyword" placeholder="Search by Name">
                 <button type="submit" class="btn btn-warning" name="btnsearch">Search</button>
             </div>
         </form>
-    <h1 style="text-align: center;">COMING SOON</h1>
-    <div id ="card" class="row text-dark d-flex justify-content-center flex-wrap">
+        
+        <h1 class="mt-5" style="text-align: center;">NOW PLAYING</h1>
+    <div id ="card" class="row text-dark d-flex justify-content-center flex-wrap m-1">
+    <?php
+            foreach ($result2 as $key => $value){
+                echo "<form method='post'>";
+                    echo "<div class='card col-xs-2 m-4' style='width: 18rem'>";
+                    echo"<a href ='detail_film.php?idfilm= $value[id_film]'><img class= 'card-img-top' src='poster/$value[poster]'></a>";
+                    echo "<div class='card-body'>";
+                    echo "<h5 class='card-title'>$value[judul]</h5>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnplay' value ='$value[id_film]'><b>Book Ticket</b></button>";
+                    // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
+                    echo"</div>";
+                    echo"</div>";
+                    echo "</form>";
+            }
+        ?>
+    </div>
+
+
+    <h1 class="mt-5" style="text-align: center;">COMING SOON</h1>
+    <div id ="card2" class="row text-dark d-flex justify-content-center flex-wrap m-1">
  
         <?php
             foreach ($result as $key => $value){
@@ -104,24 +133,8 @@ if(isset($_POST['btnbook'])){
         ?>
     </div>
 
-    <h1 style="text-align: center;">Now Playing</h1>
-    <div class="row text-dark d-flex justify-content-center flex-wrap">
-    <?php
-            foreach ($result2 as $key => $value){
-                echo "<form method='post'>";
-                    echo "<div class='card col-xs-2 m-4' style='width: 18rem'>";
-                    echo"<img class= 'card-img-top' src='poster/$value[poster]'>";
-                    echo "<div class='card-body'>";
-                    echo "<h5 class='card-title'>$value[judul]</h5>";
-                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnplay' value ='$value[id_film]'><b>Book Ticket</b></button>";
-                    // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
-                    echo"</div>";
-                    echo"</div>";
-                    echo "</form>";
-            }
-        ?>
-    </div>
-    </div>
+
+
 
     <script src="jquery.js"></script>
     <script src="jquery-ui.js"></script>
@@ -143,6 +156,14 @@ if(isset($_POST['btnbook'])){
               });
             });
 
+            $(function() {
+            fr = new FilmRoll({
+                container: '#card2',
+                configure_load: true,
+                force_buttons :true,
+                pager :false,
+              });
+            });
         
 
     
