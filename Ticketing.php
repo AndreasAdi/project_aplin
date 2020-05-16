@@ -24,7 +24,7 @@
           $_SESSION['user']=$data['Nama'];
           $_SESSION['email']=$data['Email'];
           $_SESSION['kota']=$data['City'];
-          header("Location: LoginSuccess.php");
+          header("Location: index.php");
         }
         else{
           echo "<script>alert('Password Salah!')</script>";

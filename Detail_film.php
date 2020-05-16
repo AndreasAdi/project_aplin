@@ -63,9 +63,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="List_Film.php">List Film</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
                     </li>
                     <li class="nav-item">
@@ -74,12 +71,13 @@
                 </ul>
                 <?php
                    if(!isset($_SESSION['email'])){
-                   echo "<a href='Register.php'> <text class='text-primary'>Sign Up</text> </a>
-                   <a href='Ticketing.php'> <text class='text-secondary'>Login</text> </a>";
+                   echo "<a href='Register.php'><button class = 'btn btn-primary' type ='button'>Register</button></a>
+                   <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
                 }
                 else{
                     echo"<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
                 }
+                ?>
                 ?>
                 
             </div>

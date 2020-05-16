@@ -42,8 +42,11 @@ if(isset($_POST['btnplay'])){
         header("Location: Detail_film.php?idfilm=".$_POST['btnplay']."");
     }
 }
+
+
 if(isset($_POST['btn_logout'])){
-    header("Location: Ticketing.php");
+    unset($_SESSION['email']);
+    header("Location: index.php");
 }
 ?>
 <!doctype html>
@@ -72,24 +75,24 @@ if(isset($_POST['btn_logout'])){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="List_Film.php">List Film</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="Riwayat.php">Riwayat</a>
             </li>
             </ul>
+            <form method="POST">
             <?php
                    if(!isset($_SESSION['email'])){
-                   echo "<a href='Register.php'> <text class='text-primary'>Sign Up</text> </a>
-                   <a href='Ticketing.php'> <text class='text-secondary'>Login</text> </a>";
+                   echo "<a href='Register.php'><button class = 'btn btn-primary' type ='button'>Register</button></a>
+                   <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
                 }
                 else{
                     echo"<button class = 'btn btn-danger' type='submit' name='btn_logout'>Logout</button>";
                 }
                 ?>
+            </form>
+
         </div>
     </nav>
 
