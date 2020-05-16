@@ -22,7 +22,7 @@ if (isset($_FILES["bukti"])) {
             $db->exec($queryupdate);
         }
         unset($_SESSION['snackcart']);
-        header('Location: index.php');
+        header('Location: List_Film.php');
     } else {
         // Jika file upload diatas 0 error code nya, maka upload file gagal!
         echo "Tidak ada file yang diterima oleh server!";

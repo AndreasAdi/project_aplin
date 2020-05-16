@@ -42,6 +42,9 @@ if(isset($_POST['btnplay'])){
         header("Location: Detail_film.php?idfilm=".$_POST['btnplay']."");
     }
 }
+if(isset($_POST['btn_logout'])){
+    header("Location: Ticketing.php");
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -57,8 +60,8 @@ if(isset($_POST['btnplay'])){
     <link rel="stylesheet" href="detaifilm.css">
     <title>List Film!</title>
   </head>
-  <body">
-
+  <body>
+  <form method="POST">
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
@@ -84,7 +87,7 @@ if(isset($_POST['btnplay'])){
                    <a href='Ticketing.php'> <text class='text-secondary'>Login</text> </a>";
                 }
                 else{
-                    echo"<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
+                    echo"<button class = 'btn btn-danger' type='submit' name='btn_logout'>Logout</button>";
                 }
                 ?>
         </div>
@@ -95,7 +98,7 @@ if(isset($_POST['btnplay'])){
  
     
   
-    <form method="POST">
+    
             <div class="input-group col-4 ml-auto mt-5">
                 <input type="text" class="form-control mr-1" name="keyword" placeholder="Search by Name">
                 <button type="submit" class="btn btn-warning" name="btnsearch">Search</button>

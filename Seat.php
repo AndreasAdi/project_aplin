@@ -3,8 +3,10 @@
       include_once "DB/database.php";
       if(!isset($_SESSION['email'])){
         header("Location: Ticketing.php");
-    }
-
+      }
+      if(isset($_POST['btn_logout'])){
+        header("Location: Ticketing.php");
+      }
       $selectGambarFilm="SELECT * FROM film WHERE id_film=$_GET[idFilm]";
       $stmt=$db->prepare($selectGambarFilm);
       $stmt->execute();
@@ -23,6 +25,7 @@
     <title>Seat</title>
   </head>
   <body>
+  <form method='post'>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
@@ -55,14 +58,14 @@
                    <a href='Ticketing.php'> <text class='text-secondary'>Login</text> </a>";
                 }
                 else{
-                    echo"<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
+                    echo"<button class = 'btn btn-danger' type='submit' name='btn_logout'>Logout</button>";
                 }
                 ?>
         </div>
     </nav>
 
     <!-- ISIAN PERTAMA-->
-    <form method='post'>
+    
     <div name="isianform" style="width: 400px; height: 600px; margin-left: 30px; float:left; margin-top: -21px;">
     <br><br>
       <div class="form-group col-md-6">
@@ -106,10 +109,10 @@
         foreach ($result as $key => $value) {
           //ini tolong dibuat rapih layout seatnya
           if ($value['status'] == 0) {
-              echo "<button id='kursi' type='submit' name='kursi' style='text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 20px; margin-top: 10px; float:left; background-color:green;' value='$value[nama]'> $value[nama] </button>";
+              echo "<button id='kursi' class='btn btn-success' type='submit' name='kursi' style='text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 20px; margin-top: 10px; float:left;' value='$value[nama]'> $value[nama] </button>";
           }
           else {
-            echo "<button id='kursi' type='submit' name='kursi' style='text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 20px; margin-top: 10px; float:left; background-color:red;' value='$value[nama]'> $value[nama] </button>";
+            echo "<button id='kursi' type='submit' class='btn btn-danger' name='kursi' style='text-align: center; color: white; font-size: 30px; padding-top: 3px; width: 60px; height: 60px; margin-left: 20px; margin-top: 10px; float:left;' value='$value[nama]'> $value[nama] </button>";
           }
         }
       ?>
@@ -130,8 +133,9 @@
         
         $('#container').on('click','#kursi',function(e){
           e.preventDefault();
-          if ($(this).css('background-color') == "rgb(0, 128, 0)") {
-            $(this).css('background-color','red');
+          if ($(this).attr("class") == "btn btn-success") {
+            $(this).removeClass("btn-success");
+            $(this).addClass("btn-danger");
             selectedSeat[ctr]=$(this).attr('value');
             seat=$(this).attr('value')+','+seat;
             ctr++;

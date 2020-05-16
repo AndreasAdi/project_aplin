@@ -210,7 +210,7 @@
                                 ?></td>
                                 <td><?php echo number_format($totalsemua, 0, ',', '.');?></td>
                                 <td><?php if ($value['buktiBayar'] == "-") {
-                                    echo "Belum ada butki";
+                                    echo "Belum ada bukti";
                                 }
                                 else {
                                     echo "<img src='bukti/$value[buktiBayar]' width='300px' height='200px'>";
