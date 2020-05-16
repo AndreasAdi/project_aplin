@@ -16,7 +16,7 @@
                 $stmt->bindValue(':pass', password_hash($_POST["password"], PASSWORD_DEFAULT),PDO::PARAM_STR);
                 $stmt->bindValue(':alamat',$_POST['Alamat'],PDO::PARAM_STR);
                 $stmt->bindValue(':telepon',$_POST['Telepon'],PDO::PARAM_STR);
-                $stmt->bindValue(':city',ucfirst($_POST['city']),PDO::PARAM_STR);
+                $stmt->bindValue(':city',strtoupper($_POST['city']),PDO::PARAM_STR);
                 $stmt->bindValue(':email',$_POST['email'],PDO::PARAM_STR);
                 $stmt->bindValue(':gender',$_POST['gender'],PDO::PARAM_STR);
                 $result=$stmt->execute();
