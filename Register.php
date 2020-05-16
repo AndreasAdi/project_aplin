@@ -16,7 +16,7 @@
                 $stmt->bindValue(':pass', password_hash($_POST["password"], PASSWORD_DEFAULT),PDO::PARAM_STR);
                 $stmt->bindValue(':alamat',$_POST['Alamat'],PDO::PARAM_STR);
                 $stmt->bindValue(':telepon',$_POST['Telepon'],PDO::PARAM_STR);
-                $stmt->bindValue(':city',$_POST['city'],PDO::PARAM_STR);
+                $stmt->bindValue(':city',ucfirst($_POST['city']),PDO::PARAM_STR);
                 $stmt->bindValue(':email',$_POST['email'],PDO::PARAM_STR);
                 $stmt->bindValue(':gender',$_POST['gender'],PDO::PARAM_STR);
                 $result=$stmt->execute();
@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Register</title>
 </head>
 
 <body>
@@ -150,8 +150,8 @@
 
    
         <!-- Footer -->
-        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
+        <footer class='page-footer font-small fixed-bottom bg-dark text-light mt-5' style="clear: both; position: relative;">
+            <div class='footer-copyright text-center py-3'>© 2020 Copyright
             </div>
         </footer>
 

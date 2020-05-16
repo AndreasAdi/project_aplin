@@ -18,13 +18,33 @@
         $stmt->execute();
         $dataDetailSnack=$stmt->fetch(PDO::FETCH_ASSOC);
         $totalharga=$jumlah*$dataDetailSnack['harga_snack'];
-        $dataSnackBaru=array(
-            "id_snack"=>$idsnack,
-            "jumlah"=>$jumlah,
-            "totalharga"=>$totalharga,
-            "namasnack"=>$dataDetailSnack['nama_snack']
-        );
-        $_SESSION['snackcart'][]=$dataSnackBaru;
+        $ctrkembar=0;
+        if(isset($_SESSION['snackcart'])){
+            foreach ($_SESSION['snackcart'] as $key => $value) {
+                if($value['id_snack']==$idsnack){
+                    $ctrkembar++;
+                    $_SESSION['snackcart'][$key]['jumlah']=$_SESSION['snackcart'][$key]['jumlah']+$jumlah;
+                    $_SESSION['snackcart'][$key]['totalharga']=$_SESSION['snackcart'][$key]['totalharga']+$totalharga;
+                }
+            }
+            if($ctrkembar==0){
+                $dataSnackBaru=array(
+                    "id_snack"=>$idsnack,
+                    "jumlah"=>$jumlah,
+                    "totalharga"=>$totalharga,
+                    "namasnack"=>$dataDetailSnack['nama_snack']
+                );
+                $_SESSION['snackcart'][]=$dataSnackBaru;
+            }
+        }else{
+            $dataSnackBaru=array(
+                "id_snack"=>$idsnack,
+                "jumlah"=>$jumlah,
+                "totalharga"=>$totalharga,
+                "namasnack"=>$dataDetailSnack['nama_snack']
+            );
+            $_SESSION['snackcart'][]=$dataSnackBaru;
+        }
     }
     if(isset($_POST['checkout'])){
         //Query untuk id_header
@@ -82,7 +102,14 @@
     <!-- Bootstrap CSS -->
     <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous'>
 
-    <title>Hello, world!</title>
+    <title>Snack</title>
+    <script>
+        $(document).ready(function(e){
+            $("#comingsoon").on("click",'input[name="Add"]',function(){
+                $("#cart").html('');
+            });
+        });
+    </script>
   </head>
   <body>
     <!-- Optional JavaScript -->
@@ -144,7 +171,7 @@
     <form method='post'>
         <div style='margin-left:100px;margin-top:20px;'>
             <h4>Details</h4>
-            <ul class='list-group' style="width:35%">
+            <ul class='list-group' style="width:35%;" id='cart'>
             <?php
                 //isi detail cart
                 if (isset($_SESSION['snackcart'])) {
@@ -169,7 +196,7 @@
    
         <!-- Footer -->
         <!-- ada masalah footernya tidak bisa tambah kebawah kalo banyak cartnya -->
-        <footer class='page-footer font-small fixed-bottom bg-dark text-light mt-5'>
+        <footer class='page-footer font-small fixed-bottom bg-dark text-light mt-5' style="clear: both; position: relative;">
             <div class='footer-copyright text-center py-3'>© 2020 Copyright
             </div>
         </footer>

@@ -20,7 +20,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Seat</title>
   </head>
   <body>
     <!-- Optional JavaScript -->
@@ -82,7 +82,6 @@
               <p> $_GET[nama] - Studio $_GET[idStudio]  <br>
                   Date: <b>$_GET[tgl]</b><br>
                   Time: <b>$_GET[jam]</b><br>
-                  Snacks: <b>Without Snacks</b> <br>
                   <b>Rp. 50.0000/Seat</b>
               </p>
               
@@ -173,8 +172,8 @@
   
    
         <!-- Footer -->
-        <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright
+        <footer class='page-footer font-small fixed-bottom bg-dark text-light mt-5' style="clear: both; position: relative;">
+            <div class='footer-copyright text-center py-3'>© 2020 Copyright
             </div>
         </footer>
 
