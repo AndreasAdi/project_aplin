@@ -7,7 +7,7 @@
                     #insert ke table film
                     $stmt=$db->prepare($queryinsert);
                     $stmt->bindValue(':nama_cabang',$_POST['nama_cabang'],PDO::PARAM_STR);
-                    $stmt->bindValue(':kota_cabang',$_POST["kota_cabang"],PDO::PARAM_STR);
+                    $stmt->bindValue(':kota_cabang',strtoupper($_POST["kota_cabang"]),PDO::PARAM_STR);
                     $stmt->bindValue(':alamat_cabang',$_POST['alamat_cabang'],PDO::PARAM_STR);
                     $result=$stmt->execute();
                     
