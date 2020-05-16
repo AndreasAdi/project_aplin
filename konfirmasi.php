@@ -14,6 +14,10 @@
         SET StatusBayar = 'Confirmed'
         WHERE id_tiket = '$id'";
         $db->exec($queryupdate);
+        $queryupdate="UPDATE header_ordersnack
+        SET status_order = 'Confirmed'
+        WHERE id_tiket = '$id'";
+        $db->exec($queryupdate);
         
         //Select Email User
         $querySelectEmailUser="SELECT * FROM pendingticket WHERE id_tiket = $id";
@@ -39,20 +43,60 @@
         $stmt->execute();
         $resultCabang=$stmt->fetch(PDO::FETCH_ASSOC);
 
-        sendEmail($resultEmail['Email'], "Your Receipt for ".$resultJudul['judul']."","<b>Judul:</b> $resultJudul[judul]<br>
-                                                                                <b>Cabang: </b> $resultCabang[nama_cabang] <br>
-                                                                                <b>Studio: </b> $resultStudio[Nama_Studio]<br> 
-                                                                                <b>Tanggal: </b>$resultEmail[tanggal]<br> 
-                                                                                <b>Jam: </b>$resultEmail[jam]<br> 
-                                                                                <b>Seat: </b>$resultEmail[Seat]<br> 
-                                                                                <b>Grand Total: </b>$resultEmail[Harga]<br>
-                                                                                Thank you for your purchase at <b>Bioskop Id</b>,Enjoy Your Movie.");
+        //Select Header snack
+        $querySelectHeader="SELECT * FROM header_ordersnack WHERE id_tiket=$id";
+        $stmt=$db->prepare($querySelectHeader);
+        $stmt->execute();
+        $resultHeader=$stmt->fetch(PDO::FETCH_ASSOC);
+
+        //Select snack detail
+        $querySelectDetail="SELECT * FROM ordersnack WHERE id_header=$resultHeader[id_header]";
+        $stmt=$db->prepare($querySelectDetail);
+        $stmt->execute();
+        $resultDetail=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $total = 0;
+        foreach ($resultDetail as $key => $value) {
+            $total = $total + $value['totalharga'];
+        }
+        $total = $total + $resultEmail['Harga'];
+
+        if ($resultDetail) { //kalau ada snack
+            $isi = "<b>Judul:</b> $resultJudul[judul]<br>
+            <b>Cabang: </b> $resultCabang[nama_cabang] <br>
+            <b>Studio: </b> $resultStudio[Nama_Studio]<br> 
+            <b>Tanggal: </b>$resultEmail[tanggal]<br> 
+            <b>Jam: </b>$resultEmail[jam]<br>
+            <b>Seat: </b>$resultEmail[Seat]<br> 
+            <b>Snacks: </b><br>";
+            foreach ($resultDetail as $key => $value) {
+                $isi = $isi . "$value[nama_snack] @$value[harga_snack] x $value[jumlah_snack] = $value[totalharga]<br>";
+            }
+            $isi = $isi . "
+            <b>Grand Total: </b>$total<br>
+            Thank you for your purchase at <b>Bioskop Id</b>,Enjoy Your Movie.";
+            sendEmail($resultEmail['Email'], "Your Receipt for ".$resultJudul['judul']."",$isi);
+        }
+        else { //kalau tidak ada snack
+            sendEmail($resultEmail['Email'], "Your Receipt for ".$resultJudul['judul']."","<b>Judul:</b> $resultJudul[judul]<br>
+                        <b>Cabang: </b> $resultCabang[nama_cabang] <br>
+                        <b>Studio: </b> $resultStudio[Nama_Studio]<br> 
+                        <b>Tanggal: </b>$resultEmail[tanggal]<br> 
+                        <b>Jam: </b>$resultEmail[jam]<br> 
+                        <b>Seat: </b>$resultEmail[Seat]<br> 
+                        <b>Grand Total: </b>$resultEmail[Harga]<br>
+                        Thank you for your purchase at <b>Bioskop Id</b>,Enjoy Your Movie.");
+        }
+        
     }
     if(isset($_POST['reject'])){
         $id = $_POST['reject'];
         //ubah status jadi confirmed
         $queryupdate="UPDATE pendingticket
         SET StatusBayar = 'Rejected'
+        WHERE id_tiket = '$id'";
+        $db->exec($queryupdate);
+        $queryupdate="UPDATE header_ordersnack
+        SET status_order = 'Rejected'
         WHERE id_tiket = '$id'";
         $db->exec($queryupdate);
 
@@ -124,40 +168,53 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>ID Tiket</th>
-                                <th>ID Film</th>
-                                <th>Tanggal</th>
-                                <th>Jam</th>
-                                <th>Seat</th>
-                                <th>Status</th>
-                                <th>Bukti</th>
-                                <th>Harga</th>
                                 <th>Email</th>
-                                <th>Studio</th>
+                                <th>Seat</th>
+                                <th>Total Tiket</th>
+                                <th>Total Snack</th>
+                                <th>Total Semua</th>
+                                <th>Bukti</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
                                  foreach ($result as $key => $value) {
+                                $totalsemua = 0;
                             ?>
                            
                             <tr>
-                                <td><?php echo $value["id_tiket"];?></td>
-                                <td><?php echo $value["id_film"];?></td>
-                                <td><?php echo $value["tanggal"];?></td>
-                                <td><?php echo $value["jam"];?></td>
+                                <td><?php echo $value["Email"];?></td>
                                 <td><?php echo $value["Seat"];?></td>
-                                <td><?php echo $value["StatusBayar"];?></td>
+                                <td><?php
+                                $totalsemua = $totalsemua + $value['Harga']; 
+                                echo number_format($value["Harga"], 0, ',', '.');?></td>
+                                <td><?php
+                                    $querysnack = "SELECT * FROM header_ordersnack where id_tiket = $value[id_tiket]";
+                                    $resultsnack = $db->query($querysnack)->fetch(PDO::FETCH_ASSOC);
+                                    if ($resultsnack) {
+                                        $idheader = $resultsnack['id_header'];
+                                        $querysnack = "SELECT * FROM ordersnack where id_header = $idheader";
+                                        $resultsnack = $db->query($querysnack)->fetchAll(PDO::FETCH_ASSOC);
+                                        $total = 0;
+                                        foreach ($resultsnack as $keya => $valuea) {
+                                            $total = $total + $valuea['totalharga'];
+                                        }
+                                        $totalsemua = $totalsemua + $total;
+                                        echo number_format($total, 0, ',', '.');
+                                    }
+                                    else {
+                                        echo "Tidak ada snack";
+                                    }
+
+                                ?></td>
+                                <td><?php echo number_format($totalsemua, 0, ',', '.');?></td>
                                 <td><?php if ($value['buktiBayar'] == "-") {
                                     echo "Belum ada butki";
                                 }
                                 else {
                                     echo "<img src='bukti/$value[buktiBayar]' width='300px' height='200px'>";
                                 } ?></td>
-                                <td><?php echo number_format($value["Harga"], 0, ',', '.');?></td>
-                                <td><?php echo $value["Email"];?></td>
-                                <td><?php echo $value["studio"];?></td>
                                 <td><?php echo"<button class='btn btn-success' type ='submit' value ='$value[id_tiket]' name ='confirm'>Confirm</button><button class='btn btn-danger' type ='submit' value ='$value[id_tiket]' name ='reject'>Reject</button>";?></td>
                             </tr>
                             <?php

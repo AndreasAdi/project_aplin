@@ -10,28 +10,21 @@
     $dataSnack=$stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if(isset($_POST['Add'])){
-        if(isset($_SESSION['snackcart'])){
-            $tempcart=$_SESSION['snackcart'];
-            $idsnack=$_POST['Add'];
-            $jumlah=$_POST['jumlah'];
-
-            $dataSnackBaru=array(
-                "id_snack"=>$idsnack,
-                "jumlah"=>$jumlah
-            );
-
-            $tempcart[$idsnack]=$dataSnackBaru;
-            $_SESSION['snackcart']=$tempcart;
-        }else{
-            $idsnack=$_POST['Add'];
-            $jumlah=$_POST['jumlah'];
-            $dataSnackBaru=array(
-                "id_snack"=>$idsnack,
-                "jumlah"=>$jumlah
-            );
-            $tempcart[$idsnack]=$dataSnackBaru;
-            $_SESSION['snackcart']=$tempcart;
-        }
+        //addnya snackcart session
+        $idsnack=$_POST['Add'];
+        $jumlah=$_POST['jumlah'];
+        $querySelectDataSnack="SELECT * FROM snack WHERE id_snack=$idsnack";
+        $stmt=$db->prepare($querySelectDataSnack);
+        $stmt->execute();
+        $dataDetailSnack=$stmt->fetch(PDO::FETCH_ASSOC);
+        $totalharga=$jumlah*$dataDetailSnack['harga_snack'];
+        $dataSnackBaru=array(
+            "id_snack"=>$idsnack,
+            "jumlah"=>$jumlah,
+            "totalharga"=>$totalharga,
+            "namasnack"=>$dataDetailSnack['nama_snack']
+        );
+        $_SESSION['snackcart'][]=$dataSnackBaru;
     }
     if(isset($_POST['checkout'])){
         //Query untuk id_header
@@ -41,9 +34,10 @@
         $dataCountSnack=$stmt->fetchAll(PDO::FETCH_ASSOC);
         $orderNumber=count($dataCountSnack)+1;
 
-        $queryInsertHeaderOrder="INSERT INTO header_ordersnack(id_header,email,status_order)VALUES(:id_header,:email,:status_order)";
+        $queryInsertHeaderOrder="INSERT INTO header_ordersnack(id_header,id_tiket,email,status_order)VALUES(:id_header,:id_tiket,:email,:status_order)";
         $stmt=$db->prepare($queryInsertHeaderOrder);
         $stmt->bindValue(':id_header',$orderNumber,PDO::PARAM_STR);
+        $stmt->bindValue(':id_tiket',$_SESSION['id_tiket'],PDO::PARAM_STR);
         $stmt->bindValue(':email',$_SESSION['email'],PDO::PARAM_STR);
         $stmt->bindValue(':status_order','Pending',PDO::PARAM_STR);
         $stmt->execute();
@@ -68,7 +62,14 @@
         }
 
         echo"<div class='alert alert-success' role='alert'>Berhasil Order Snack ! </div>";
-        unset($_SESSION['snackcart']);
+        // unset($_SESSION['snackcart']);
+        header('Location: confirmbayar.php');
+    }
+    if (isset($_POST['delete'])) {
+        unset($_SESSION['snackcart'][$_POST['delete']]);
+    }
+    if (isset($_POST['skip'])) {
+        header('Location: confirmbayar.php');
     }
 ?>
 <!doctype html>
@@ -118,9 +119,9 @@
     <!-- ISIAN PERTAMA-->
 
     <!--SNACK--> <br><br>
-    <h3 style='text-align: center;'>Favourite Snack Of The Month</h3>
+    <h3 style='text-align: center;'>Ingin menambah snack?</h3>
     <br>
-    <div id='comingsoon' style="column-count: 4;">
+    <div id='comingsoon' style="column-count: 5; margin-left:100px;">
     <?php
         foreach ($dataSnack as $key => $value) {
             echo "
@@ -141,13 +142,33 @@
     ?>
     </div>
     <form method='post'>
-        <button class='btn btn-primary' name='checkout' type='submit'>Check Out</button>
+        <div style='margin-left:100px;margin-top:20px;'>
+            <h4>Details</h4>
+            <ul class='list-group' style="width:35%">
+            <?php
+                //isi detail cart
+                if (isset($_SESSION['snackcart'])) {
+                    foreach ($_SESSION['snackcart'] as $key => $value) {
+                        //query data snack
+                        echo "
+                        <li class='list-group-item'>$value[namasnack] x $value[jumlah] = ".number_format($value['totalharga'], 0, ',', '.')." <button type='submit' class='btn btn-danger' style='float:right' name='delete' value='$key'>Delete</button></li>
+                        ";
+                    }
+                }
+                
+            ?>
+            </ul>
+        </div>
+        <button class='btn btn-primary' name='checkout' type='submit' style='margin-left:100px;margin-top:20px;'>Check Out</button><br>
+        
+        <button class='btn btn-success' name='skip' type='submit' style='margin-left:100px;margin-top:10px;'>Skip</button>
     </form>
 
   </body>
   
    
         <!-- Footer -->
+        <!-- ada masalah footernya tidak bisa tambah kebawah kalo banyak cartnya -->
         <footer class='page-footer font-small fixed-bottom bg-dark text-light mt-5'>
             <div class='footer-copyright text-center py-3'>© 2020 Copyright
             </div>

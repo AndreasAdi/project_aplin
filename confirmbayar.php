@@ -21,6 +21,7 @@ if (isset($_FILES["bukti"])) {
             WHERE id_tiket = '$_SESSION[id_tiket]'";
             $db->exec($queryupdate);
         }
+        unset($_SESSION['snackcart']);
         header('Location: index.php');
     } else {
         // Jika file upload diatas 0 error code nya, maka upload file gagal!
@@ -79,6 +80,47 @@ if (isset($_FILES["bukti"])) {
     <div class="container">
     <div class="alert alert-success" role="alert">
         Berhasil booking tiket, Silahkan melakukan pembayaran
+    </div>
+    <div>
+        <h3>Rincian</h3>
+        <h4>Tiket</h4>
+        <?php
+        //isi detail tiket
+            $querySelectDataTiket="SELECT * FROM pendingticket WHERE id_tiket = '$_SESSION[id_tiket]'";
+            $stmt=$db->prepare($querySelectDataTiket);
+            $stmt->execute();
+            $dataDetailTiket=$stmt->fetch(PDO::FETCH_ASSOC);
+            $totalsemua = $dataDetailTiket['Harga'];
+            echo "Seats : $dataDetailTiket[Seat]<br>";
+            echo "Total : ".number_format($dataDetailTiket['Harga'], 0, ',', '.');
+
+            // echo "<ul class='list-group' style='width:35%;'>
+            // <li class='list-group-item'>Seats : $dataDetailTiket[Harga]</li>
+            // </ul>";
+        ?>
+        <h4>Snack</h4>
+        <?php
+            if(isset($_SESSION['snackcart'])) {
+                $total = 0;
+                foreach ($_SESSION['snackcart'] as $key => $value) {
+                    $total = $total + $value['totalharga'];
+                    echo "<ul class='list-group' style='width:35%;'>
+                    <li class='list-group-item'>$value[namasnack] x $value[jumlah] = ".number_format($value['totalharga'], 0, ',', '.')."</li>
+                    </ul>";
+                }
+                echo "Total : ".number_format($total, 0, ',', '.');
+                $totalsemua = $totalsemua + $total;
+            }
+            else {
+                echo "-";
+            }
+            echo "<br><br><br>";
+            echo "<h3>Total Pembayaran : ".number_format($totalsemua, 0, ',', '.')."</h3>";
+            echo "Metode pembayaran : Bank Transfer<br>";
+            echo "Nomor Rekening : 1233 1233 1233";
+
+        ?>
+        <br><br>
     </div>
     <form method='post' enctype="multipart/form-data">
     <div class='form-group'>

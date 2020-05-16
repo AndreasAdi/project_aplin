@@ -160,7 +160,7 @@
                 if(res=='sukses'){
                   alert('Berhasil');
                   seat='';
-                  location.replace("confirmbayar.php");
+                  location.replace("Meals.php");
                 }else{
                   alert('gagal');
                 }
