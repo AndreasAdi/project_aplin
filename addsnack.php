@@ -2,18 +2,38 @@
     include "DB/database.php";
     session_start();
     
-    if(isset($_POST['btnadd'])){
-        $queryinsert='INSERT INTO snack(nama_snack,harga_snack) VALUES(:nama_snack,:harga_snack)';
-        try {
-            $stmt=$db->prepare($queryinsert);
-            $stmt->bindValue(':nama_snack',$_POST['nama_snack'],PDO::PARAM_STR);
-            $stmt->bindValue(':harga_snack',$_POST["harga_snack"],PDO::PARAM_STR);
-            $result=$stmt->execute();
-            header('Location: snack.php');
-    }
-         catch (\Throwable $th) {
-                //throw $th;
+     if(isset($_POST['btnadd'])){
+            var_dump($_FILES);
+        if (isset($_FILES['gambar_snack'])) {
+            if ($_FILES["gambar_snack"]["error"] == 0) {
+                // Upload file berhasil!
+                $tipefile = explode(".",$_FILES['gambar_snack']['name']);
+    
+                $ctr = count($tipefile)-1;
+                $tipefile = $tipefile[$ctr];
+    
+                $status = move_uploaded_file($_FILES["gambar_snack"]["tmp_name"], 
+                    __DIR__."/gambar_snack/".$_POST['nama_snack'].".".$tipefile);
+                
+                }
+                if ($status != false) {
+                    $queryinsert='INSERT INTO snack(nama_snack,harga_snack,gambar_snack) VALUES(:nama_snack,:harga_snack,:gambar_snack)';
+                    try {
+                        $stmt=$db->prepare($queryinsert);
+                        $stmt->bindValue(':nama_snack',$_POST['nama_snack'],PDO::PARAM_STR);
+                        $stmt->bindValue(':harga_snack',$_POST["harga_snack"],PDO::PARAM_STR);
+                        $stmt->bindValue(':gambar_snack',$_POST['nama_snack'].".".$tipefile,PDO::PARAM_STR);
+                        $result=$stmt->execute();
+                        header('Location: snack.php');
+                }
+                     catch (\Throwable $th) {
+                            //throw $th;
+                            echo("gagal");
+                    }
+                }
         }
+
+
 }
 
 
@@ -39,20 +59,10 @@ if(isset($_POST['btncancel'])){
 <body>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
-    <Form method='post'>
 
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="admin.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+            <a class="navbar-brand" href="admin.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -81,8 +91,8 @@ if(isset($_POST['btncancel'])){
         </nav>
 
 
-        <div class="container mt-5">
-            <form method="post">
+        <div class="container mt-5 col-5">
+            <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="nama_snack">Nama</label><br>
                     <input class="form-control" type="text" name="nama_snack" required>
@@ -90,33 +100,48 @@ if(isset($_POST['btncancel'])){
                 <div class="form-group">
                     <label for="harga_snack">Harga</label><br>
                     <div class="input-group-prepend">
-                            <span class="input-group-text">Rp</span>
-                            <input type="text" class="form-control" id="harga_snack" name='harga_snack' required>
-                        </div>
-                       
+                        <span class="input-group-text">Rp</span>
+                        <input type="text" class="form-control" id="harga_snack" name='harga_snack' required>
                     </div>
-                    <button class="btn btn-primary" name="btnadd">Add</button>
-                <button class="btn btn-danger" name="btncancel">Cancel</button>
+
                 </div>
-                
-            </form>
+
+                <div class="form-group">
+                    <label for="gambar">Gambar</label><br>
+                    <input type="file" name="gambar_snack"><br />
+                </div>
+                <button type="submit" class="btn btn-primary" name="btnadd">Add</button>
+                <button class="btn btn-danger" name="btncancel">Cancel</button>
         </div>
 
+    </form>
+    </div>
 
-<<<<<<< HEAD
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <script src="http://transtatic.com/js/numericInput.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#harga_snack").numericInput({
+                allowNegative: "false",
+                allowFloat: "false"
+            })
+        })
+    </script>
 </body>
-<footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
-<div class="footer-copyright text-center py-3">© 2020 Copyright</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small bottom bg-dark text-light mt-5">
+    <div class="footer-copyright text-center py-3">© 2020 Copyright
+    </div>
 </footer>
-=======
 
-</body>
-   
-   <!-- Footer -->
-   <footer class="page-footer font-small bottom bg-dark text-light mt-5">
-       <div class="footer-copyright text-center py-3">© 2020 Copyright
-       </div>
-   </footer>
-
->>>>>>> 547fdddef475679dd97d2c20c2bfd36ded2d7fe8
 </html>

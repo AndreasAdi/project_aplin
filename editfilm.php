@@ -6,13 +6,14 @@
         $genre = $_POST['genre'];
         $cast = $_POST['cast'];
         $id_film =$_GET["film"];
-        $queryupdate="UPDATE film set judul= :judul, tahun = :tahun,deskripsi = :deskripsi,durasi = :durasi where id_film = $id_film";
+        $queryupdate="UPDATE film set judul= :judul, tahun = :tahun,deskripsi = :deskripsi,durasi = :durasi, trailer = :trailer  where id_film = $id_film";
         try {
             $stmt=$db->prepare($queryupdate);
             $stmt->bindValue(':judul',$_POST['judul'],PDO::PARAM_STR);
             $stmt->bindValue(':tahun',$_POST["tahun"],PDO::PARAM_STR);
             $stmt->bindValue(':deskripsi',$_POST['deskripsi'],PDO::PARAM_STR);
             $stmt->bindValue(':durasi',$_POST['durasi'],PDO::PARAM_STR);
+            $stmt->bindValue(':trailer',$_POST['trailer'],PDO::PARAM_STR);
             $result=$stmt->execute();       
 
 
@@ -157,7 +158,10 @@ $genre = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <label for="judul">Deskripsi</label><br>
                     <textarea class="form-control" rows="5" name="deskripsi"><?php echo ($result[0]['deskripsi'])?></textarea>
                 </div>
-
+                <div class="form-group">
+                    <label for="durasi">Trailer (Link)</label><br>
+                    <input class="form-control" type="text" name="trailer" value="<?php echo ($result[0]['trailer'])?>">
+                </div>              
                 <button class="btn btn-primary" name="btnedit">Edit</button>
                 <button class="btn btn-danger" name="btncancel">Cancel</button>
             </form>

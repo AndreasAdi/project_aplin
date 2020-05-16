@@ -60,6 +60,7 @@ if(isset($_POST['btn_logout'])){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" href="jquery-ui.css">
+
     <link rel="stylesheet" href="detaifilm.css">
     <title>List Film!</title>
   </head>
@@ -84,7 +85,7 @@ if(isset($_POST['btn_logout'])){
             <form method="POST">
             <?php
                    if(!isset($_SESSION['email'])){
-                   echo "<a href='Register.php'><button class = 'btn btn-primary' type ='button'>Register</button></a>
+                   echo "<a href='Register.php'><button class = 'btn btn-primary mr-2' type ='button'>Register</button></a>
                    <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
                 }
                 else{
@@ -117,7 +118,7 @@ if(isset($_POST['btn_logout'])){
                     echo"<a href ='detail_film.php?idfilm= $value[id_film]'><img class= 'card-img-top' src='poster/$value[poster]'></a>";
                     echo "<div class='card-body'>";
                     echo "<h5 class='card-title'>$value[judul]</h5>";
-                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnplay' value ='$value[id_film]'><b>Book Ticket</b></button>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnplay' value ='$value[id_film]'><b>View Detail</b></button>";
                     // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
                     echo"</div>";
                     echo"</div>";
@@ -137,7 +138,7 @@ if(isset($_POST['btn_logout'])){
                     echo"<a href ='detail_film.php?idfilm= $value[id_film]'><img class= 'card-img-top' src='poster/$value[poster]'></a>";
                     echo "<div class='card-body'>";
                     echo "<h5 class='card-title'>$value[judul]</h5>";
-                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnbook' value ='$value[id_film]'><b>Book Ticket</b></button>";
+                    echo"<button class='btn btn-block btn-warning text-dark' type ='submit' name ='btnbook' value ='$value[id_film]'><b>View Detail</b></button>";
                     // echo"<input type ='hidden' value = '$value[id_menu]' name = 'idmenu'>";
                     echo"</div>";
                     echo"</div>";
@@ -153,6 +154,7 @@ if(isset($_POST['btn_logout'])){
     <script src="jquery-ui.js"></script>
     <script src="jquery.touchSwipe.js"></script>
     <script src="jquery.film_roll.js"></script>
+
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>

@@ -160,22 +160,21 @@
     <!--SNACK--> <br><br>
     <h3 style='text-align: center;'>Ingin menambah snack?</h3>
     <br>
-    <div id='comingsoon' style="column-count: 5; margin-left:100px;">
+    <div id='comingsoon' class="container d-flex p-2">
     <?php
         foreach ($dataSnack as $key => $value) {
             echo "
-                    <div style='break-inside:avoid;'>
                         <form method='post'>
-                            <div class='card' style='width: 18rem;' >
+                            <div class='card col-xs-2 m-4 style='width: 18rem;' >
+                            <img class= 'card-img-top pt-2 ml-auto mr-auto mb-3' src='gambar_snack/$value[gambar_snack]' style='height:150px; width:200px'>
                             <div class='card-body'>
                                 <h5 class='card-title'>$value[nama_snack]</h5>
                                 <p class='card-text'>Rp. $value[harga_snack]</p>
                                 <input type='text' class='form-control' name='jumlah'>
-                                <button class='btn btn-success' type='submit' value='$value[id_snack]' name='Add'>Add To Cart</button>
+                                <button class='btn btn-success mt-2' type='submit' value='$value[id_snack]' name='Add'>Add To Cart</button>
                             </div>
                             </div>
                         </form>
-                    </div>
             ";
         }
     ?>

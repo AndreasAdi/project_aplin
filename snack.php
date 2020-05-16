@@ -79,6 +79,7 @@
                         <thead>
                             <tr>
                                 <th>id</th>
+                                <th>Gambar</th>
                                 <th>Nama</th>
                                 <th>Harga</th>
                                 <th>Update</th>
@@ -92,6 +93,7 @@
                            
                             <tr>
                                 <td><?php echo $value["id_snack"];?></td>
+                                <td><?php echo "<img src ='gambar_snack/$value[gambar_snack]' height = '50px'>" ?></td>
                                 <td><?php echo $value["nama_snack"];?></td>
                                 <td><?php echo number_format($value["harga_snack"], 0, ',', '.');?></td>
                                 <td><?php echo"<button class='btn btn-warning' type ='submit' value ='$value[id_snack]' name ='btnupdate'><i class='fas fa-edit'></i></button>"?></td>

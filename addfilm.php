@@ -21,7 +21,7 @@
                 
                 $genre = $_POST['genre'];
                 $cast = $_POST['cast'];
-                $queryinsert='INSERT INTO film(judul,tahun,deskripsi,durasi,poster) VALUES(:judul,:tahun,:deskripsi,:durasi,:poster)';
+                $queryinsert='INSERT INTO film(judul,tahun,deskripsi,durasi,poster,trailer) VALUES(:judul,:tahun,:deskripsi,:durasi,:poster,:trailer)';
                 try {
                     #insert ke table film
                     $stmt=$db->prepare($queryinsert);
@@ -30,6 +30,7 @@
                     $stmt->bindValue(':durasi',$_POST['durasi'],PDO::PARAM_STR);
                     $stmt->bindValue(':deskripsi',$_POST['deskripsi'],PDO::PARAM_STR);
                     $stmt->bindValue(':poster',$_POST['judul'].".".$tipefile,PDO::PARAM_STR);
+                    $stmt->bindValue(':trailer',$_POST['trailer'],PDO::PARAM_STR);
                     $result=$stmt->execute();
                     
                     #dapatkan id movie
@@ -194,11 +195,18 @@ if(isset($_POST['btncancel'])){
                 <label for="judul">Deskripsi</label><br>
                 <textarea class="form-control" rows="5" name="deskripsi"></textarea>
             </div>
-
+            
+            <div class="form-group">
+                <label for="trailer">Trailer(link)</label><br>
+                <input class="form-control" type="text" name="trailer">
+            </div>
+            
             <div class="form-group">
                 <label for="Poster">Poster</label><br>
                 <input type="file" name="poster"><br />
             </div>
+
+
             <button type="submit" class="btn btn-primary" name="btnadd">Add</button>
             <button class="btn btn-danger" name="btncancel">Cancel</button>
         </form>
