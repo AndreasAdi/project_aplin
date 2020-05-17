@@ -1,6 +1,7 @@
 <?php
 include "DB/database.php";
 session_start();
+
     $queryInsertPendingTicket="INSERT INTO PendingTicket(id_film,id_jadwal,tanggal,jam,Seat,StatusBayar,buktiBayar,Harga,Email,Studio) VALUES(:id_film,:id_jadwal,:tgl,:jam,:seat,:StatusBayar,:buktiBayar,:harga,:email,:studio)";
     $stmt = $db->prepare($queryInsertPendingTicket);
     $stmt->bindValue(':id_film',$_POST['id_film'],PDO::PARAM_INT);
