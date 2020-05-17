@@ -20,7 +20,7 @@ $stmt = $db->prepare($querygenre);
 $stmt->execute();
 $resultgenre = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$query = "SELECT c.nama_cabang,c.id_cabang FROM cabang c, jadwal j WHERE c.id_cabang = j.id_cabang AND j.id_film = $_GET[idfilm]";
+$query = "SELECT DISTINCT c.nama_cabang,c.id_cabang FROM cabang c, jadwal j WHERE c.id_cabang = j.id_cabang AND j.id_film = $_GET[idfilm]";
 $stmt = $db->prepare($query);
 $stmt->execute();
 $listcabang = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -222,8 +222,8 @@ if (isset($_POST['btn_logout'])) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <h3 id="harga_ticket">Harga Ticket : Rp.0</h3>
-                        <h3 id="total" class="mr-3">Total : 0</h3>
+                        <h3 id="harga_ticket"></h3>
+                        <h3 id="total" class="mr-3"></h3>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-warning text-dark" id="btnconfirm">Finish Book</button>
                     </div>
@@ -300,7 +300,10 @@ if (isset($_POST['btn_logout'])) {
         })
 
         function loadstudio(id_cabang, id_film) {
-
+            $("#seat").html('');
+            $("#harga_ticket").html('');
+            $("#total").html('');
+            $("#info").html('');
             $("#studio").html('');
             $("#tanggal").html('');
             $("#jam").html('');
@@ -336,6 +339,9 @@ if (isset($_POST['btn_logout'])) {
             ctr2 =0;
             loadtotal();
             $("#seat").html('');
+            $("#harga_ticket").html('');
+            $("#total").html('');
+            $("#info").html('');
             $.ajax({
                 method: "post", // metode ajax
                 url: "loadseat.php", // tujuan request
@@ -345,7 +351,8 @@ if (isset($_POST['btn_logout'])) {
                     'tanggal': tanggal
                 }, // data yang dikirim
                 success: function(res) {
-                    seat = JSON.parse(res);
+                    if(res!="[]"){
+                        seat = JSON.parse(res);
                     ctr = 0;
                     $("#seat").append(`<div class ="text-center bg-dark text-light">Screen</div>`)
                     seat.forEach(item => {
@@ -372,17 +379,24 @@ if (isset($_POST['btn_logout'])) {
                         $("#harga_ticket").html('');
                         $("#harga_ticket").append("Harga Ticket : Rp." + seperator(item.harga_ticket))
                     })
+
+
+                    $("#info").append(`
+                    Available Seat: <span class="bg-success  ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                    Reserved Seat : <span class="bg-secondary ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                    Your Seat : <span class="bg-warning ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                    `)
+                    }
+                    else{
+                        $("#seat").append('<h1>No Seat Available</h1>')
+                    }
+                    
                 }
             });
 
 
 
-            $("#info").html('');
-            $("#info").append(`
-                Available Seat: <span class="bg-success  ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                Reserved Seat : <span class="bg-secondary ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                Your Seat : <span class="bg-warning ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                `)
+
 
         }
 
