@@ -142,6 +142,15 @@
             $stmt = $db->exec($queryInsertPendingTicket);
             $queryInsertPendingTicket="INSERT INTO seat VALUES('','8H',$id,0)";
             $stmt = $db->exec($queryInsertPendingTicket);
+
+
+            $query = "SELECT max(id_jadwal) AS id_jadwal FROM jadwal";
+            $result = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+            $id_jadwal = $result[0]["id_jadwal"];
+
+            $queryticket="INSERT INTO ticket VALUES('','$_POST[studio]','$id_jadwal',$_POST[harga_ticket])";
+            $stmt = $db->exec($queryticket);
+
             header('Location: jadwal.php');
         }
          catch (\Throwable $th) {
@@ -257,6 +266,15 @@ if(isset($_POST['btncancel'])){
                 <div class="form-group">
                 <label for="cast">Jam</label><br>
                 <input class="input-group"  type ="time" name="jam">
+                </div>
+                
+                <div class="form-group">
+                    <label for="harga_ticket">Harga Ticket</label><br>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                        <input type="text" class="form-control" id="harga_ticket" name='harga_ticket' required>
+                    </div>
+
                 </div>
 
                 <div class="form-group">

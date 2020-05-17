@@ -168,6 +168,7 @@ if(isset($_POST['btn_logout'])){
                 configure_load: true,
                 force_buttons :true,
                 pager :false,
+                position : "left"
               });
             });
 
@@ -177,6 +178,7 @@ if(isset($_POST['btn_logout'])){
                 configure_load: true,
                 force_buttons :true,
                 pager :false,
+                position : "left"
               });
             });
         

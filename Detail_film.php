@@ -230,9 +230,10 @@
                      </div>                           
                     </div>
                     <div class="modal-footer">
+                        <h3 id = "harga_ticket">Harga Ticket : Rp.0</h3>
                         <h3 id="total" class="mr-3">Total : 0</h3>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary">Next</button>
                     </div>
                 </div>
             </div>
@@ -256,7 +257,8 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
     <script>
-        
+        var total =0;
+        var harga_ticket =0;
         jQuery("a#trailer").YouTubePopUp();
         $(document).ready(function(){
             $('#modalseat').fullscreen();
@@ -265,13 +267,17 @@
            
             })
             $("#jam").change(function(){
+
                 loadseat($("#studio").val(),$("#jam").val(),$("#tanggal").val());
             })
             
         })
 
         function loadstudio(id_cabang,id_film){
+
                 $("#studio").html('');
+                $("#tanggal").html('');
+                $("#jam").html('');
                 $.ajax({
                 method: "post", // metode ajax
                 url: "loadstudio1.php", // tujuan request
@@ -300,6 +306,8 @@
         }
 
         function loadseat(id_studio,jam,tanggal){
+            total =0;
+            loadtotal();
                 $("#seat").html('');
                 $.ajax({
                 method: "post", // metode ajax
@@ -328,9 +336,15 @@
                             $("#seat").append('<br>')
                             ctr =0;
                         }
+                        harga_ticket = item.harga_ticket;
+                        $("#harga_ticket").html('');
+                         $("#harga_ticket").append("Harga Ticket : Rp."+ seperator(item.harga_ticket))
                 })
                     }
                 });
+
+ 
+
                 $("#info").html('');
                 $("#info").append(`
                 Available Seat: <span class="bg-success  ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
@@ -340,7 +354,6 @@
             
         }
 
-        total =0;
 
         $(document).on("click", "#kursi", (function(e) {
         
@@ -362,10 +375,19 @@
                 $(this).attr("status",0);
                 total--;
             }
-            $("#total").html(``);
-            $("#total").append("Total : "+total)
-            
+
+            loadtotal();
         }))
+
+        function loadtotal(){
+            $("#total").html(``);
+            $("#total").append("Total : "+seperator((total*harga_ticket)));
+
+        }
+
+        function seperator(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     </script>
 
 </body>
