@@ -2,9 +2,8 @@
  session_start();
  include "DB/database.php";
  
-
 if(isset($_POST['keyword'])){
-    header("Location: list_film.php?search=$_POST[keyword]");
+    header("Location: index.php?search=$_POST[keyword]");
 }
 if(isset($_GET['search'])){
     $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0 AND f.judul like '%$_GET[search]%' ";
@@ -101,7 +100,7 @@ if(isset($_POST['btn_logout'])){
 
  
     
-  
+            <form  method="POST">
     
             <div class="input-group col-4 ml-auto mt-5">
                 <input type="text" class="form-control mr-1" name="keyword" placeholder="Search by Name">
