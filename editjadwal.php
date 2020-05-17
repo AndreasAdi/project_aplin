@@ -13,12 +13,16 @@
             $stmt->bindValue(':jam',$_POST["jam"],PDO::PARAM_STR);
             $stmt->bindValue(':status',$_POST['status'],PDO::PARAM_STR);
             $result=$stmt->execute();
-            header('Location: jadwal.php');
+           
     }
          catch (\Throwable $th) {
                 //throw $th;
                 echo($th);
         }
+
+        $queryticket="UPDATE ticket SET harga_ticket = $_POST[harga_ticket] where id_jadwal =$_GET[jadwal]";
+        $stmt = $db->exec($queryticket);
+        header('Location: jadwal.php');
 }
 $query = "SELECT * from jadwal where id_jadwal = $_GET[jadwal]";
 $stmt = $db->prepare($query);
@@ -128,7 +132,15 @@ if(isset($_POST['btncancel'])){
                 <label for="cast">Jam</label><br>
                 <input class="input-group " id="jam" type ="time" name="jam">
                 </div>
+                
+                <div class="form-group">
+                    <label for="harga_ticket">Harga Ticket</label><br>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Rp</span>
+                        <input type="text" class="form-control" id="harga_ticket" name='harga_ticket' required>
+                    </div>
 
+                </div>
                 <div class="form-group">
                 <label for="status">Status</label><br>
                 <select class="form-control" name="status" id="status">
@@ -155,8 +167,13 @@ if(isset($_POST['btncancel'])){
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
-
+        <script src="http://transtatic.com/js/numericInput.min.js"></script>
 <script>
+            $("#harga_ticket").numericInput({
+                allowNegative: "false",
+                allowFloat: "false"
+            })
+
         $("#cabang").change(function(){
         loadstudio($(this).val());
     });

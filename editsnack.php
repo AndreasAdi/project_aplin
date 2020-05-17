@@ -104,6 +104,14 @@ if(isset($_POST['btncancel'])){
             </form>
         </div>
 
+    <script src="jquery.js"></script>
+    <script src="http://transtatic.com/js/numericInput.min.js"></script>
+    <script>
+                    $("#harga_snack").numericInput({
+                allowNegative: "false",
+                allowFloat: "false"
+            })
+    </script>
 
 </body>
 

@@ -305,11 +305,17 @@ if(isset($_POST['btncancel'])){
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+ <script src="http://transtatic.com/js/numericInput.min.js"></script>
  <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
  <script src="timepicker.js"></script> -->
 <script>
 
     $(document).ready(function(){
+        $("#harga_ticket").numericInput({
+                allowNegative: "false",
+                allowFloat: "false"
+            })
+        
         $("#jam").timepicker(option);
     })
 
