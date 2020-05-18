@@ -22,7 +22,7 @@ if (isset($_FILES["bukti"])) {
             $db->exec($queryupdate);
         }
         unset($_SESSION['snackcart']);
-        header('Location: List_Film.php');
+        header('Location: index.php');
     } else {
         // Jika file upload diatas 0 error code nya, maka upload file gagal!
         echo "Tidak ada file yang diterima oleh server!";
@@ -43,7 +43,7 @@ if (isset($_FILES["bukti"])) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Pembayaran</title>
 </head>
 
 <body>
