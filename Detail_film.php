@@ -356,6 +356,7 @@ if (isset($_POST['btn_logout'])) {
         }
 
         function loadcabang(kota_cabang, id_film) {
+            $("#cabang").html('');
             $("#seat").html('');
             $("#harga_ticket").html('');
             $("#total").html('');
