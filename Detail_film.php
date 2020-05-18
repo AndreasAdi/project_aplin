@@ -20,10 +20,16 @@ $stmt = $db->prepare($querygenre);
 $stmt->execute();
 $resultgenre = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$query = "SELECT DISTINCT c.nama_cabang,c.id_cabang FROM cabang c, jadwal j WHERE c.id_cabang = j.id_cabang AND j.id_film = $_GET[idfilm]";
+
+$query = "SELECT DISTINCT c.kota_cabang FROM cabang c, jadwal j WHERE c.id_cabang = j.id_cabang AND j.id_film = $_GET[idfilm]";
 $stmt = $db->prepare($query);
 $stmt->execute();
-$listcabang = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$listkota = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// $query = "SELECT DISTINCT c.nama_cabang,c.id_cabang FROM cabang c, jadwal j WHERE c.id_cabang = j.id_cabang AND j.id_film = $_GET[idfilm]";
+// $stmt = $db->prepare($query);
+// $stmt->execute();
+// $listcabang = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_POST['select'])) {
     $queryAmbilNamaCabang = "SELECT * FROM cabang WHERE id_cabang=$_POST[select]";
@@ -199,13 +205,23 @@ if (isset($_POST['btn_logout'])) {
                         </button>
                     </div>
                     <div class="modal-body row">
-                        <select class="form-control col-3 ml-2" name="cabang" id="cabang">
-                            <option>Pilih Cabang</option>
+
+                    <select class="form-control col-2 ml-2" name="kota" id="kota">
+                            <option>Pilih Kota</option>
+                            <?php
+                            foreach ($listkota as $key => $value) {
+                                echo "<option value ='$value[kota_cabang]'>$value[kota_cabang]</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <select class="form-control col-2 ml-2" name="cabang" id="cabang">
+                            <<option>Pilih Cabang</option>
                             <?php
                             foreach ($listcabang as $key => $value) {
                                 echo "<option value ='$value[id_cabang]'>$value[nama_cabang]</option>";
                             }
-                            ?>
+                            ?> -->
                         </select>
 
                         <select class="form-control col-2 ml-2" name="studio" id="studio">
@@ -253,6 +269,11 @@ if (isset($_POST['btn_logout'])) {
         jQuery("a#trailer").YouTubePopUp();
         $(document).ready(function() {
             $('#modalseat').fullscreen();
+
+            $("#kota").change(function() {
+                loadcabang($(this).val(), $("#id_film").val());
+
+            })
             $("#cabang").change(function() {
                 loadstudio($(this).val(), $("#id_film").val());
 
@@ -329,6 +350,35 @@ if (isset($_POST['btn_logout'])) {
                     `)
                     })
                     loadseat($("#studio").val(), $("#jam").val(), $("#tanggal").val());
+                }
+            });
+
+        }
+
+        function loadcabang(kota_cabang, id_film) {
+            $("#seat").html('');
+            $("#harga_ticket").html('');
+            $("#total").html('');
+            $("#info").html('');
+            $("#studio").html('');
+            $("#tanggal").html('');
+            $("#jam").html('');
+            $.ajax({
+                method: "post", // metode ajax
+                url: "loadcabang.php", // tujuan request
+                data: {
+                    'kota_cabang': kota_cabang,
+                    'id_film': id_film
+                }, // data yang dikirim
+                success: function(res) {
+                    studio = JSON.parse(res);
+                    console.log(studio);
+                    studio.forEach(item => {
+                        $("#cabang").append(`
+                    <option value = ` + item.id_cabang + `>` + item.nama_cabang + `</option>
+                    `)
+                      
+                    })
                 }
             });
 
