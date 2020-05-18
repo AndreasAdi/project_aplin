@@ -181,6 +181,7 @@
                             <?php 
                                  foreach ($result as $key => $value) {
                                 $totalsemua = 0;
+                                $ctrdetail=0;
                             ?>
                            
                             <tr>
@@ -189,25 +190,27 @@
                                 <td><?php
                                 $totalsemua = $totalsemua + $value['Harga']; 
                                 echo number_format($value["Harga"], 0, ',', '.');?></td>
-                                <td><?php
-                                    $querysnack = "SELECT * FROM header_ordersnack where id_tiket = $value[id_tiket]";
-                                    $resultsnack = $db->query($querysnack)->fetch(PDO::FETCH_ASSOC);
-                                    if ($resultsnack) {
-                                        $idheader = $resultsnack['id_header'];
-                                        $querysnack = "SELECT * FROM ordersnack where id_header = $idheader";
-                                        $resultsnack = $db->query($querysnack)->fetchAll(PDO::FETCH_ASSOC);
-                                        $total = 0;
-                                        foreach ($resultsnack as $keya => $valuea) {
-                                            $total = $total + $valuea['totalharga'];
+                                <td>
+                                <button class='btn btn-primary' data-toggle='modal' data-target='#modal<?php echo$ctrdetail;?>' type='button'>Lihat Snack</button>
+                                <?php
+                                        $grandtotal=0;
+                                        $querysnack = "SELECT * FROM header_ordersnack where id_tiket = $value[id_tiket]";
+                                        $resultsnack = $db->query($querysnack)->fetch(PDO::FETCH_ASSOC);
+                                        if ($resultsnack) {
+                                            $idheader = $resultsnack['id_header'];
+                                            $querysnack = "SELECT * FROM ordersnack where id_header = $idheader";
+                                            $resultsnack = $db->query($querysnack)->fetchAll(PDO::FETCH_ASSOC);
+                                            $total = 0;
+                                            foreach ($resultsnack as $keya => $valuea) {
+                                                $total = $total + $valuea['totalharga'];
+                                            }
+                                            $totalsemua = $totalsemua + $total;
                                         }
-                                        $totalsemua = $totalsemua + $total;
-                                        echo number_format($total, 0, ',', '.');
-                                    }
-                                    else {
-                                        echo "Tidak ada snack";
-                                    }
-
-                                ?></td>
+                                        else {
+                                            echo "Tidak ada snack";
+                                        }
+                                ?>
+                                </td>
                                 <td><?php echo number_format($totalsemua, 0, ',', '.');?></td>
                                 <td><?php if ($value['buktiBayar'] == "-") {
                                     echo "Belum ada bukti";
@@ -218,6 +221,7 @@
                                 <td><?php echo"<button class='btn btn-success' type ='submit' value ='$value[id_tiket]' name ='confirm'>Confirm</button><button class='btn btn-danger' type ='submit' value ='$value[id_tiket]' name ='reject'>Reject</button>";?></td>
                             </tr>
                             <?php
+                            $ctrdetail++;
                               }
                              ?>
                         </tbody>
