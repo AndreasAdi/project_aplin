@@ -364,6 +364,9 @@ if (isset($_POST['btn_logout'])) {
             $("#studio").html('');
             $("#tanggal").html('');
             $("#jam").html('');
+            $("#cabang").append(`
+                    <option>Pilih Cabang</option>
+                    `)
             $.ajax({
                 method: "post", // metode ajax
                 url: "loadcabang.php", // tujuan request
