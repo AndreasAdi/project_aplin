@@ -35,6 +35,7 @@
 
     if(isset($_POST['btn_logout'])){
         unset($_SESSION['email']);
+        unset($_SESSION['snackcart']);
         header("Location: index.php");
     }
 ?>
@@ -342,9 +343,6 @@
                 })
                     }
                 });
-
- 
-
                 $("#info").html('');
                 $("#info").append(`
                 Available Seat: <span class="bg-success  ml-2 mr-2">&nbsp&nbsp&nbsp&nbsp&nbsp</span>

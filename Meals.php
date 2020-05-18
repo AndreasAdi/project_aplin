@@ -52,7 +52,7 @@
         $stmt=$db->prepare($querySelectCountSnack);
         $stmt->execute();
         $dataCountSnack=$stmt->fetchAll(PDO::FETCH_ASSOC);
-        $orderNumber=count($dataCountSnack)+1;
+        $orderNumber=count($dataCountSnack);
 
         $queryInsertHeaderOrder="INSERT INTO header_ordersnack(id_header,id_tiket,email,status_order)VALUES(:id_header,:id_tiket,:email,:status_order)";
         $stmt=$db->prepare($queryInsertHeaderOrder);
@@ -95,6 +95,7 @@
     
     if(isset($_POST['btn_logout'])){
         unset($_SESSION['email']);
+        unset($_SESSION['snackcart']);
         header("Location: index.php");
     }
 ?>

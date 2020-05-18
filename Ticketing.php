@@ -14,7 +14,6 @@
       else{
        echo "<script>alert('Email Tidak Terdaftar!')</script>";
       }
-      
     }
     else{
         $password=$data['Password'];

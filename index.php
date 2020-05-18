@@ -46,6 +46,7 @@ if(isset($_POST['btnplay'])){
 
 if(isset($_POST['btn_logout'])){
     unset($_SESSION['email']);
+    unset($_SESSION['snackcart']);
     header("Location: index.php");
 }
 ?>

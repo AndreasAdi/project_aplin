@@ -13,6 +13,7 @@ include_once "DB/database.php";
     
     if(isset($_POST['btn_logout'])){
         unset($_SESSION['email']);
+        unset($_SESSION['snackcart']);
         header("Location: index.php");
     }
 ?>
@@ -80,6 +81,8 @@ include_once "DB/database.php";
                         <tbody>
                             <?php
                             $ctr=0;
+                            $totalharga=0;
+                            $grandtotal=0;
                                 foreach ($resultRiwayat as $key => $value) {
                                     //Select Judul Film
                                     $querySelectJudul="SELECT * FROM film WHERE id_film=$value[id_film]";
@@ -98,6 +101,20 @@ include_once "DB/database.php";
                                     $stmt=$db->prepare($querySelectCabang);
                                     $stmt->execute();
                                     $resultCabang=$stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    //select header Snack
+                                    $querySelectSnack="SELECT * FROM header_ordersnack WHERE id_tiket=$value[id_tiket]";
+                                    $stmt=$db->prepare($querySelectSnack);
+                                    $stmt->execute();
+                                    $resultHeaderSnack=$stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    //select detail snack
+                                    if($resultHeaderSnack){
+                                        $querySelectDetailSnack="SELECT * FROM ordersnack WHERE id_header=$resultHeaderSnack[id_header]";
+                                        $stmt=$db->prepare($querySelectDetailSnack);
+                                        $stmt->execute();
+                                        $resultDetailSnack=$stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    }
                                     echo "
                                         <tr>
                                             <td>$resultJudul[judul]</td>
@@ -114,13 +131,27 @@ include_once "DB/database.php";
                                                 </button>
                                             </div>
                                             <div class='modal-body'>
+                                                <h5>Movie Detail</h5>
                                                 <b>Cabang : </b> $resultCabang[nama_cabang] <br>
                                                 <b>Studio : </b> $resultStudio[Nama_Studio] <br>
                                                 <b>Tanggal: </b> $value[tanggal] <br>
                                                 <b>Jam    : </b> $value[jam] <br>
                                                 <b>Seat   : </b> $value[Seat] <br>
-                                                <b>Harga  : </b> Rp.$value[Harga] <br>
-                                            </div>
+                                                <b>Harga  : </b> Rp ".number_format($value['Harga'], 0, ',', '.')." <br>
+                                                <br>
+                                                <h5>Snack</h5>";
+                                                if($resultHeaderSnack){
+                                                    foreach ($resultDetailSnack as $key => $values) {
+                                                        echo "$values[nama_snack] @$values[harga_snack] x $values[jumlah_snack] = $values[totalharga]<br>";
+                                                        $totalharga=$totalharga+$values['totalharga'];
+                                                    }
+                                                    echo "<b>Sub Total:</b>Rp ".number_format($totalharga, 0, ',', '.');
+                                                }else{
+                                                    echo "Tidak Ada Snack";
+                                                }
+                                                $grandtotal=$value['Harga']+$totalharga;
+                                                echo"<h4>Grand Total:Rp ".number_format($grandtotal, 0, ',', '.')."</h4>";
+                                            echo"</div>
                                             <div class='modal-footer'>
                                                 <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
                                             </div>
