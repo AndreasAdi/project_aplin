@@ -159,7 +159,7 @@
                   <span class="focus-input100-2"></span>
                 </div>
                 <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
-                  <input class="input100" type="password" name="confirmPassword" placeholder="Password">
+                  <input class="input100" type="password" name="confirmPassword" placeholder="Confirm Password">
                   <span class="focus-input100-1"></span>
                   <span class="focus-input100-2"></span>
                 </div>
