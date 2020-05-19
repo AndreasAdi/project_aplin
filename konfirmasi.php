@@ -90,6 +90,19 @@
     }
     if(isset($_POST['reject'])){
         $id = $_POST['reject'];
+
+         //Select Email User
+         $querySelectEmailUser="SELECT * FROM pendingticket WHERE id_tiket = $id";
+         $stmt=$db->prepare($querySelectEmailUser);
+         $stmt->execute();
+         $resultEmail = $stmt->fetch(PDO::FETCH_ASSOC);
+          //Select Judul Film
+        $querySelectJudul="SELECT * FROM film WHERE id_film = $resultEmail[id_film]";
+        $stmt=$db->prepare($querySelectJudul);
+        $stmt->execute();
+        $resultJudul = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        
         //ubah status jadi confirmed
         $queryupdate="UPDATE pendingticket
         SET StatusBayar = 'Rejected'
@@ -110,6 +123,8 @@
             WHERE nama = '$seat[$i]' and id_jadwal = '$idjadwal'";
             $stmt = $db->exec($query);
         }
+        sendEmail($resultEmail['Email'], "Rejection Notice For <b>".$resultJudul['judul']."</b>","Your booking request for $resultJudul[judul] has been <b>Rejected</b> <br>
+         we are sorry for the inconvinience,Please try to make another Book.");
         //tambah diubah status seatnya (belum bisa), seharusnya table pendingticket itu isinya id_jadwal bukan id_film
     }
 ?>
@@ -181,6 +196,7 @@
                         <thead>
                             <tr>
                                 <th>Email</th>
+                                <th>Judul</th>
                                 <th>Seat</th>
                                 <th>Total Tiket</th>
                                 <th>Total Snack</th>
@@ -193,10 +209,15 @@
                             <?php 
                             $ctrdetail=0;
                                 foreach ($result as $key => $value) {
+                                    $qselectJudulFilm="SELECT * FROM film WHERE id_film=$value[id_film]";
+                                    $stmt=$db->prepare($qselectJudulFilm);
+                                    $stmt->execute();
+                                    $resultJ=$stmt->fetch(PDO::FETCH_ASSOC);
                                     $totalsemua = 0;
                                     echo"
                                     <tr>
                                     <td>$value[Email]</td>
+                                    <td>$resultJ[judul]</td>
                                         <td>$value[Seat]</td>
                                         <td>";
                                     $totalsemua = $totalsemua + $value['Harga']; 
