@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['btnadd'])){
         $queryinsert='INSERT INTO studio(nama_studio,id_cabang) VALUES(:nama_studio,:id_cabang)';
         try {

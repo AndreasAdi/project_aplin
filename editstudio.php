@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['btnedit'])){
         $queryupdate="UPDATE studio set nama_studio= :nama_studio, id_cabang = :id_cabang where id_studio = $_GET[studio]";
         try {

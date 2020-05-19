@@ -29,7 +29,7 @@ include_once "DB/database.php";
 
     <title>Riwayat</title>
   </head>
-  <body>
+  <body class="bg-dark">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -69,11 +69,12 @@ include_once "DB/database.php";
 
     <!-- ISIAN PERTAMA-->
     <br>
-    <h1>Riwayat</h1>
+  
       <div class="container mt-5">
+      <h1 class="text-light">Riwayat</h1>
             <form method="post">
                 <div class="container mt-5">
-                    <table class="table">
+                    <table class="table table-dark">
                         <thead>
                            <th>Judul</th>
                            <th>Status</th>

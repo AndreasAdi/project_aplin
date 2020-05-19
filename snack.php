@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['addsnack'])){
         header('Location: addsnack.php');
     }

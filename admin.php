@@ -1,6 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
 ?>
 <!doctype html>
 <html lang="en">

@@ -2,26 +2,13 @@
 session_start();
 include "DB/database.php";
 
-if (isset($_POST['keyword'])) {
-    header("Location: search.php?search=$_POST[keyword]");
-}
-if (isset($_GET['search'])) {
-    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0 AND f.judul like '%$_GET[search]%' ";
-    $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
-
-} else {
-    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0";
-    $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
+if (isset($_GET['keyword'])) {
+    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.judul like '%$_GET[keyword]%' ";
 }
 
 $stmt = $db->prepare($query);
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = $db->prepare($query2);
-$stmt->execute();
-$result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 
 
 if (isset($_POST['btnbook'])) {
@@ -73,7 +60,7 @@ file_put_contents("film.json", $lisfilm);
 </head>
 <body style="background-image: url(background-collage.jpg)">
 
-    <form method="POST">
+
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
@@ -93,8 +80,11 @@ file_put_contents("film.json", $lisfilm);
                         <a class="nav-link" href="Riwayat.php">Riwayat</a>
                     </li>
                 </ul>
-                <form method="POST">
+                <form>
                 <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
+                </form>
+
+                <form method="POST">
                     <?php
                     if (!isset($_SESSION['email'])) {
                         echo "<a href='Register.php'><button class = 'btn btn-primary mr-2' type ='button'>Register</button></a>
@@ -121,7 +111,7 @@ file_put_contents("film.json", $lisfilm);
             </div>
         </form> -->
 
-        <h1 class="mt-5 text-light" style="text-align: center;">Search Result</h1>
+        <h1 class="mt-5 text-light" style="text-align: center;">Search Result (<?php echo count($result)?>)</h1>
         <div id="card2" class="row text-dark d-flex justify-content-center flex-wrap mt-5 m-1">
             <?php
             foreach ($result as $key => $value) {
@@ -201,7 +191,7 @@ file_put_contents("film.json", $lisfilm);
 
 
 <!-- Footer -->
-<footer class="page-footer font-small bottom bg-dark text-light mt-5">
+<footer class="page-footer font-small fixed-bottom bg-dark text-light mt-5">
     <div class="footer-copyright text-center py-3">© 2020 Copyright
     </div>
 </footer>

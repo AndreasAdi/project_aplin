@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['btnedit'])){
         $queryupdate="UPDATE snack set nama_snack= :nama_snack, harga_snack = :harga_snack where id_snack = $_GET[snack]";
         try {
