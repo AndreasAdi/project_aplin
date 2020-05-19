@@ -38,33 +38,35 @@ include_once "DB/database.php";
   
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Riwayat.php">Riwayat</a>
-            </li>
-            </ul>
-            <form method="POST">
-            <?php
-                   if(!isset($_SESSION['email'])){
-                   echo "<a href='Register.php'><button class = 'btn btn-primary' type ='button'>Register</button></a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                        <a class="nav-link" href="index.php">Now Showing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="comingsoon.php">Coming Soon</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="Riwayat.php">Riwayat</a>
+                    </li>
+                </ul>
+                <?php
+                if (!isset($_SESSION['email'])) {
+                    echo "<a href='Register.php'><button class = 'btn btn-primary' type ='button'>Register</button></a>
                    <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
-                }
-                else{
-                    echo"<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
+                } else {
+                    echo "<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
                 }
                 ?>
-            </form>
-        </div>
-    </nav>
+                ?>
+
+            </div>
+        </nav>
 
     <!-- ISIAN PERTAMA-->
     <br>
@@ -159,6 +161,8 @@ include_once "DB/database.php";
                                         </div>
                                         </div>
                                     ";
+                                    $grandtotal=0;
+                                    $totalharga=0;
                                     $ctr++;
                                 }
                             ?>
