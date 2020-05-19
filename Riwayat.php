@@ -63,7 +63,6 @@ include_once "DB/database.php";
                     echo "<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
                 }
                 ?>
-                ?>
 
             </div>
         </nav>
