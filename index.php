@@ -66,6 +66,7 @@ file_put_contents("film.json", $lisfilm);
     <link rel="stylesheet" href="easy-autocomplete.css">
     <link rel="stylesheet" href="easy-autocomplete.themes.css">
     <link rel="stylesheet" href="detailfim.css">
+    
     <title>List Film!</title>
 </head>
 

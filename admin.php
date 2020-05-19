@@ -4,6 +4,9 @@
     if (!isset($_SESSION["email"])){
         header("Location: ticketing.php");
      }
+     else{
+        header("Location: film.php");
+     }
 ?>
 <!doctype html>
 <html lang="en">

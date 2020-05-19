@@ -47,7 +47,26 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 
+<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+
+<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
     <title>Register</title>
 </head>
 
@@ -73,71 +92,104 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-
+            <li class="nav-item">
+                <a class="nav-link" href="List_Film.php">List Film</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Riwayat.php">Riwayat</a>
+            </li>
             </ul>
             <a href="Ticketing.php" class='btn btn-success'>Login</a>
         </div>
     </nav>
 
         <!-- ISIAN PERTAMA-->
-        <h1 style='text-align:center;'>Registrasi User</h1>
-        <div class="container col-md-6 mt-5 mb-5">
-            <form>
-                <div class="form-group">
-                    <label for="inputName">Nama</label>
-                    <input type="text" class="form-control" id="inputName" placeholder="Nama Lengkap" name='nama' required>
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress">Alamat</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="Alamat" name='Alamat' required>
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress2">Telepon</label>
-                    <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                            <span class="input-group-text">+62</span>
-                        </div>
-                        <input type="text" class="form-control" id="inputAddress2" name='Telepon' required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputCity">City</label>
-                    <input type="text" class="form-control" id="inputCity" name='city' required>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail4">Email</label>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" id="inputEmail4" name='email' required>
-                        <div class="input-group-append">
-                            <span class="input-group-text">@example.com</span>
-                        </div>
-                    </div>
+        <div class="container">
+      <form method="post">
+        <div class="limiter">
+          <div class="container-login100">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+              <form class="login100-form validate-form">
+                <span class="login100-form-title p-b-33">
+                  Register
+                </span>
 
-                    <div class="form-group">
-                        <label for="inputPassword4">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4" name='password' required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name='confirmPassword' required>
-                    </div>
-
+                
+                <div class="wrap-input100">
+                  <input class="input100" type="text" name="nama" placeholder="Nama Lengkap ">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
                 </div>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect2">Gender</label>
-                    <select class="form-control" name='gender'>
+
+                <div class="wrap-input100">
+                  <input class="input100" type="text" name="city" placeholder="kota">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
+                </div>
+
+                <div class="wrap-input100">
+                  <input class="input100" type="text" name="Alamat" placeholder="Alamat">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
+                </div>
+                <div class="wrap-input100">
+                <select class="form-control" name='gender'>
                         <option value='Laki-Laki'>Laki-Laki</option>
                         <option value='Perempuan'>Perempuan</option>
                     </select>
                 </div>
-                <div class="form-group">
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary" name='register'>Register</button>
+                <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                  <input class="input100" type="email" name="email" placeholder="Email">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
                 </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                  <input class="input100" type="text" name="Telepon" placeholder="Phone number">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
                 </div>
-            </form>
+
+                <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+                  <input class="input100" type="password" name="password" placeholder="Password">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
+                </div>
+                <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+                  <input class="input100" type="password" name="confirmPassword" placeholder="Password">
+                  <span class="focus-input100-1"></span>
+                  <span class="focus-input100-2"></span>
+                </div>
+
+
+                
+
+                <div class="container-login100-form-btn m-t-20">
+                  <button class="login100-form-btn" name="register" type="submit">
+                    Sign Up
+                  </button>
+                </div>
+
+
+
+                <div class="text-center p-t-45 p-b-4">
+                  <span class="txt1">
+                    Already have an account?
+                  </span>
+
+                  <a href="ticketing.php" class="txt2 hov1">
+                    Sign in
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+      </form>
+    </div>
     </form>
 </body>
 
