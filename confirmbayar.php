@@ -62,27 +62,6 @@ if (isset($_FILES["bukti"])) {
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="List_Film.php">List Film</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Ticketing.php">Ticketing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Riwayat.php">Riwayat</a>
-                </li>
-            </ul>
-        </div>
     </nav>
 
     <!-- ISIAN PERTAMA-->
@@ -135,7 +114,7 @@ if (isset($_FILES["bukti"])) {
         <form method='post' enctype="multipart/form-data">
             <div class='form-group'>
                 <label>Upload Bukti Pembayaran</label>
-                <input type='file' class='form-control-file' name='bukti'>
+                <input type='file' class='form-control-file' name='bukti' required>
                 <button type='submit' name='bayar' class='btn btn-primary mb-5'>Bayar</button>
             </div>
         </form>
