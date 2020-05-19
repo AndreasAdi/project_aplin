@@ -164,14 +164,15 @@
     <div id='comingsoon' class="container d-flex p-2">
     <?php
         foreach ($dataSnack as $key => $value) {
+                $harga = number_format($value['harga_snack'], 0, ',', '.');
             echo "
                         <form method='post'>
                             <div class='card col-xs-2 m-4 style='width: 18rem;' >
                             <img class= 'card-img-top pt-2 ml-auto mr-auto mb-3' src='gambar_snack/$value[gambar_snack]' style='height:150px; width:200px'>
                             <div class='card-body'>
                                 <h5 class='card-title'>$value[nama_snack]</h5>
-                                <p class='card-text'>Rp. $value[harga_snack]</p>
-                                <input type='text' class='form-control' name='jumlah'>
+                                <p class='card-text'>Rp. $harga</p>
+                                <input type='text' id='jumlah' class='form-control' name='jumlah' placeholder ='Masukkan jumlah'>
                                 <button class='btn btn-success mt-2' type='submit' value='$value[id_snack]' name='Add'>Add To Cart</button>
                             </div>
                             </div>
@@ -202,6 +203,15 @@
         
         <button class='btn btn-success' name='skip' type='submit' style='margin-left:100px;margin-top:10px;'>Skip</button>
     </form>
+    <script src="http://transtatic.com/js/numericInput.min.js"></script>
+<script>
+            $(document).ready(function () {
+            $(".form-control#jumlah").numericInput({
+                allowNegative: "false",
+                allowFloat: "false"
+            })
+        })
+    </script>
 
   </body>
   

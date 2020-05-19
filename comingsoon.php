@@ -88,6 +88,24 @@ file_put_contents("comingsoon.json", $lisfilm);
                 <li class="nav-item active">
                     <a class="nav-link" href="comingsoon.php">Coming Soon</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Genre
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <?php 
+                            $query = "SELECT DISTINCT f.nama_genre AS nama_genre FROM filmgenre f";
+                            $stmt = $db->prepare($query);
+                            $stmt->execute();
+                            $listgenre = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($listgenre as $key => $value) {
+                                echo ("<a class='dropdown-item' href='search.php?genre=$value[nama_genre]'>$value[nama_genre]</a>");
+                            }
+                          
+                        ?>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Riwayat.php">Riwayat</a>
                 </li>
@@ -149,7 +167,7 @@ file_put_contents("comingsoon.json", $lisfilm);
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/jquery.gsap.min.js"></script>
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
             $("#card2").sliphover({});

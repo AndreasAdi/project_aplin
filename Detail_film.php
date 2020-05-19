@@ -76,6 +76,24 @@ if (isset($_POST['btn_logout'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="comingsoon.php">Coming Soon</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Genre
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <?php 
+                            $query = "SELECT DISTINCT f.nama_genre AS nama_genre FROM filmgenre f";
+                            $stmt = $db->prepare($query);
+                            $stmt->execute();
+                            $listgenre = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($listgenre as $key => $value) {
+                                echo ("<a class='dropdown-item' href='search.php?genre=$value[nama_genre]'>$value[nama_genre]</a>");
+                            }
+                          
+                        ?>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Riwayat.php">Riwayat</a>
                 </li>

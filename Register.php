@@ -73,15 +73,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="List_Film.php">List Film</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Riwayat.php">Riwayat</a>
-            </li>
+
             </ul>
             <a href="Ticketing.php" class='btn btn-success'>Login</a>
         </div>

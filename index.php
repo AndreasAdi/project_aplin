@@ -71,53 +71,70 @@ file_put_contents("film.json", $lisfilm);
 
 <body style="background-image: url(background-collage.jpg)">
 
-    
-        <!--NAVBAR-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Now Showing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="comingsoon.php">Coming Soon</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Riwayat.php">Riwayat</a>
-                    </li>
-                </ul>
-    <form action="search.php">
-    <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
-    </form>
+    <!--NAVBAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.php">Now Showing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="comingsoon.php">Coming Soon</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Genre
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <?php 
+                            $query = "SELECT DISTINCT f.nama_genre AS nama_genre FROM filmgenre f";
+                            $stmt = $db->prepare($query);
+                            $stmt->execute();
+                            $listgenre = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($listgenre as $key => $value) {
+                                echo ("<a class='dropdown-item' href='search.php?genre=$value[nama_genre]'>$value[nama_genre]</a>");
+                            }
+                          
+                        ?>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Riwayat.php">Riwayat</a>
+                </li>
+
+               
+            </ul>
+            <form action="search.php">
+                <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
+            </form>
 
 
-    <form method="Post">
-    <?php
-    if (!isset($_SESSION['email'])) {
-        echo "<a href='Register.php'><button class = 'btn btn-primary mr-2 ml-4' type ='button'>Register</button></a>
+            <form method="Post">
+                <?php
+                if (!isset($_SESSION['email'])) {
+                    echo "<a href='Register.php'><button class = 'btn btn-primary mr-2 ml-4' type ='button'>Register</button></a>
                    <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
-    } else {
-        echo "<button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>";
-    }
-    ?>
-    </form>
-   
+                } else {
+                    echo "<button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>";
+                }
+                ?>
+            </form>
 
 
-    </div>
+
+        </div>
     </nav>
 
 
 
     <h1 class="mt-5 text-light" style="text-align: center;">NOW SHOWING</h1>
-
-
-
 
     <div id="card2" class="row text-dark d-flex justify-content-center flex-wrap mt-5 m-1">
         <?php
@@ -143,7 +160,7 @@ file_put_contents("film.json", $lisfilm);
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/jquery.gsap.min.js"></script>
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
             $("#card2").sliphover({});
