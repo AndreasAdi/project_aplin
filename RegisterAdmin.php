@@ -19,7 +19,7 @@
                 $stmt->bindValue(':city',strtoupper($_POST['city']),PDO::PARAM_STR);
                 $stmt->bindValue(':email',$_POST['email'],PDO::PARAM_STR);
                 $stmt->bindValue(':gender',$_POST['gender'],PDO::PARAM_STR);
-                $stmt->bindValue(':role','user',PDO::PARAM_STR);
+                $stmt->bindValue(':role','admin',PDO::PARAM_STR);
                 $result=$stmt->execute();
                 echo"<div class='alert alert-success' role='alert'>Berhasil Register ! </div>";
             } catch (\Throwable $th) {
@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Register</title>
+    <title>Register Admin</title>
 </head>
 
 <body>
@@ -65,30 +65,15 @@
     </script>
     <Form method='post'>
         <!--NAVBAR-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="List_Film.php">List Film</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Meals.php">Pre-Order Snack</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Riwayat.php">Riwayat</a>
-            </li>
-            </ul>
-            <a href="Ticketing.php" class='btn btn-success'>Login</a>
+        <div>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
+                <a href="Ticketing.php" class='btn btn-success' style='position:absolute; right:0; margin-right:10px;'>Login</a>
+            </nav>
         </div>
-    </nav>
 
         <!-- ISIAN PERTAMA-->
-        <h1 style='text-align:center;'>Registrasi User</h1>
+        <h1 style='text-align:center;'>Registrasi Admin</h1>
         <div class="container col-md-6 mt-5 mb-5">
             <form>
                 <div class="form-group">
