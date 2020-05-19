@@ -74,7 +74,7 @@ if (isset($_POST['btn_logout'])) {
                 <li class="nav-item">
                         <a class="nav-link" href="index.php">Now Showing</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="comingsoon.php">Coming Soon</a>
                     </li>
                     <li class="nav-item">
