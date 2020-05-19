@@ -207,14 +207,18 @@ if(isset($_POST['btncancel'])){
                     <li class="nav-item">
                         <a class="nav-link" href="studio.php">Studio</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="konfirmasi.php">Konfirmasi Pembayaran</a>
+                    </li>
                 </ul>
+                <form method="POST">
+                <button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>
+                </form>
                 <?php
-                   if(!isset($_SESSION['email'])){
-                   echo "<a href='Register.php'> <text class='text-primary'>Sign Up</text> </a>
-                   <a href='Ticketing.php'> <text class='text-secondary'>Login</text> </a>";
-                }
-                else{
-                    echo"<button class = 'btn btn-danger' name='btn_logout'>Logout</button>";
+                if (isset($_POST['btn_logout'])) {
+                    unset($_SESSION['email']);
+                    unset($_SESSION['snackcart']);
+                    header("Location: index.php");
                 }
                 ?>
             </div>
