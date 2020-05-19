@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['btnadd'])){
         $queryinsert='INSERT INTO jadwal(id_film,id_cabang,id_studio,tanggal,jam,status) VALUES(:id_film,:id_cabang,:id_studio,:tanggal,:jam,:status)';
         try {

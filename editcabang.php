@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['btnedit'])){
         $queryupdate="UPDATE cabang set nama_cabang= :nama_cabang, kota_cabang = :kota_cabang, alamat_cabang= :alamat_cabang where id_cabang = $_GET[cabang]";
         try {

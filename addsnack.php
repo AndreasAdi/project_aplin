@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
      if(isset($_POST['btnadd'])){
             var_dump($_FILES);
         if (isset($_FILES['gambar_snack'])) {

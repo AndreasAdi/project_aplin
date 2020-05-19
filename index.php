@@ -2,9 +2,6 @@
 session_start();
 include "DB/database.php";
 
-if (isset($_POST['keyword'])) {
-    header("Location: search.php?search=$_POST[keyword]");
-}
 if (isset($_GET['search'])) {
     $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1 AND f.judul like '%$_GET[search]%' ";
     $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1 AND f.judul like '%$_GET[search]%' ";
@@ -45,6 +42,7 @@ if (isset($_POST['btn_logout'])) {
     unset($_SESSION['snackcart']);
     header("Location: index.php");
 }
+
 $query = "SELECT f.judul AS judul_film, f.tahun AS tahun,CONCAT('detail_film.php?idfilm',f.id_film) AS link FROM film f";
 $stmt = $db->prepare($query);
 $stmt->execute();
@@ -70,9 +68,10 @@ file_put_contents("film.json", $lisfilm);
     <link rel="stylesheet" href="detailfim.css">
     <title>List Film!</title>
 </head>
+
 <body style="background-image: url(background-collage.jpg)">
 
-    <form method="POST">
+    
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="Index.php"><img src="logo.png" height="30"> <b>Bioskop.ID</b></a>
@@ -92,110 +91,108 @@ file_put_contents("film.json", $lisfilm);
                         <a class="nav-link" href="Riwayat.php">Riwayat</a>
                     </li>
                 </ul>
-                <form method="POST">
-                <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
-                    <?php
-                    if (!isset($_SESSION['email'])) {
-                        echo "<a href='Register.php'><button class = 'btn btn-primary mr-2' type ='button'>Register</button></a>
+    <form action="search.php">
+    <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
+    </form>
+
+
+    <form method="Post">
+    <?php
+    if (!isset($_SESSION['email'])) {
+        echo "<a href='Register.php'><button class = 'btn btn-primary mr-2 ml-4' type ='button'>Register</button></a>
                    <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
-                    } else {
-                        echo "<button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>";
-                    }
-                    ?>
- 
-                </form>
-
-            </div>
-        </nav>
+    } else {
+        echo "<button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>";
+    }
+    ?>
+    </form>
+   
 
 
+    </div>
+    </nav>
 
-        <h1 class="mt-5 text-light" style="text-align: center;">NOW SHOWING</h1>
 
-        <!-- <form method="POST">
 
-            <div class=" col-8 mt-5 mx-auto content-center">
-                <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
-               
-            </div>
-        </form> -->
-
-       
-        <div id="card2" class="row text-dark d-flex justify-content-center flex-wrap mt-5 m-1">
-            <?php
-            foreach ($result as $key => $value) {
-                echo "<form method='post'>";
-                echo "<a href ='detail_film.php?idfilm= $value[id_film]'><img id='card' class='rounded m-3' height = 300px src='poster/$value[poster]'  title='<b>$value[judul]</b><br>$value[tahun]'></a></li>";
-                echo "</form>";
-            }
-            ?>
-            </ul>
-        </div>
+    <h1 class="mt-5 text-light" style="text-align: center;">NOW SHOWING</h1>
 
 
 
 
-        <script src="jquery.js"></script>
-        <script src="jquery-ui.js"></script>
-        <script src="jquery.touchSwipe.js"></script>
-        <script src="jquery.film_roll.js"></script>
-        <script src="jquery.easy-autocomplete.js"></script>
-        <script src="jquery.sliphover.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/jquery.gsap.min.js"></script>
+    <div id="card2" class="row text-dark d-flex justify-content-center flex-wrap mt-5 m-1">
+        <?php
+        foreach ($result as $key => $value) {
+            echo "<form method='post'>";
+            echo "<a href ='detail_film.php?idfilm= $value[id_film]'><img id='card' class='rounded m-3' height = 300px src='poster/$value[poster]'  title='<b>$value[judul]</b><br>$value[tahun]'></a></li>";
+            echo "</form>";
+        }
+        ?>
+        </ul>
+    </div>
 
-        <script>
 
-            $(document).ready(function(){
-                $("#card2").sliphover({});
-         
-            })
-            var options = {
-                url: "film.json",
-                getValue: "judul_film",
-                list: {
-                    match: {
-                        enabled: true
-                    },
-                    onClickEvent: function() {
-                        var film = $("#search").getSelectedItemData().judul_film;
-                        location.replace(`search.php?search=`+film);
-                    }
+
+
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.js"></script>
+    <script src="jquery.touchSwipe.js"></script>
+    <script src="jquery.film_roll.js"></script>
+    <script src="jquery.easy-autocomplete.js"></script>
+    <script src="jquery.sliphover.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/jquery.gsap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#card2").sliphover({});
+
+        })
+        var options = {
+            url: "film.json",
+            getValue: "judul_film",
+            list: {
+                match: {
+                    enabled: true
                 },
+                onClickEvent: function() {
+                    var film = $("#search").getSelectedItemData().judul_film;
+                    location.replace(`search.php?search=` + film);
+                }
+            },
 
-                template: {
-                    type: "description",
-                    fields: {
-                        description: "tahun"
-                    }
-                },
-                theme: "round"
-                
-            };
-            $("#search").easyAutocomplete(options);
+            template: {
+                type: "description",
+                fields: {
+                    description: "tahun"
+                }
+            },
+            theme: "round"
 
-            // $(function() {
-            //     fr = new FilmRoll({
-            //         container: '#card',
-            //         configure_load: true,
-            //         force_buttons: true,
-            //         pager: false,
-            //         position: "left"
-            //     });
-            // });
+        };
+        $("#search").easyAutocomplete(options);
 
-            // $(function() {
-            //     fr = new FilmRoll({
-            //         container: '#card2',
-            //         configure_load: true,
-            //         force_buttons: true,
-            //         pager: false,
-            //         position: "center"
-            //     });
-            // });
-        </script>
+        // $(function() {
+        //     fr = new FilmRoll({
+        //         container: '#card',
+        //         configure_load: true,
+        //         force_buttons: true,
+        //         pager: false,
+        //         position: "left"
+        //     });
+        // });
+
+        // $(function() {
+        //     fr = new FilmRoll({
+        //         container: '#card2',
+        //         configure_load: true,
+        //         force_buttons: true,
+        //         pager: false,
+        //         position: "center"
+        //     });
+        // });
+    </script>
 </body>
 
 

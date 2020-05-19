@@ -1,7 +1,9 @@
 <?php
     include "DB/database.php";
     session_start();
-    
+    if (!isset($_SESSION["email"])){
+        header("Location: ticketing.php");
+     }
     if(isset($_POST['btnedit'])){
         $queryupdate="UPDATE jadwal set id_film= :id_film, id_cabang = :id_cabang,id_studio =:id_studio,jam =:jam,tanggal =:tanggal,status =:status where id_jadwal = $_GET[jadwal]";
         try {
