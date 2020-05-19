@@ -93,30 +93,32 @@ file_put_contents("film.json", $lisfilm);
                     </li>
                 </ul>
                 <form method="POST">
+                <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
                     <?php
                     if (!isset($_SESSION['email'])) {
                         echo "<a href='Register.php'><button class = 'btn btn-primary mr-2' type ='button'>Register</button></a>
                    <a href='Ticketing.php'> <button class = 'btn btn-success' type ='button'>Login</button> </a>";
                     } else {
-                        echo "<button class = 'btn btn-danger' type='submit' name='btn_logout'>Logout</button>";
+                        echo "<button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>";
                     }
                     ?>
+ 
                 </form>
 
             </div>
         </nav>
 
-        <!--COMING SOON-->
+
 
         <h1 class="mt-5 text-light" style="text-align: center;">NOW SHOWING</h1>
 
-        <form method="POST">
+        <!-- <form method="POST">
 
             <div class=" col-8 mt-5 mx-auto content-center">
                 <input type="text" class="form-control" style="border-radius: 30px" name="keyword" placeholder="Search Movies" id="search">
-                <!-- <button type="submit" class="btn btn-warning" name="btnsearch">Search</button> -->
+               
             </div>
-        </form>
+        </form> -->
 
        
         <div id="card2" class="row text-dark d-flex justify-content-center flex-wrap mt-5 m-1">
