@@ -73,8 +73,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="studio.php">Studio</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="konfirmasi.php">Konfirmasi Pembayaran</a>
+                    </li>
                 </ul>
-                <a href="Ticketing.php"> <text class="text-secondary mr-2">logout</text> </a>
+                <form method="POST">
+                <button class = 'btn btn-danger ml-4' type='submit' name='btn_logout'>Logout</button>
+                </form>
+                <?php
+                if (isset($_POST['btn_logout'])) {
+                    unset($_SESSION['email']);
+                    unset($_SESSION['snackcart']);
+                    header("Location: index.php");
+                }
+                ?>
             </div>
         </nav>
 
