@@ -3,13 +3,14 @@ session_start();
 include "DB/database.php";
 
 if (isset($_POST['keyword'])) {
-    header("Location: search.php?search=$_POST[keyword]");
+    header("Location: comingsoon.php?search=$_POST[keyword]");
 }
 if (isset($_GET['search'])) {
-    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1 AND f.judul like '%$_GET[search]%' ";
-    $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1 AND f.judul like '%$_GET[search]%' ";
+    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0 AND f.judul like '%$_GET[search]%' ";
+    $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
+
 } else {
-    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
+    $query = "SELECT DISTINCT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =0";
     $query2 = "SELECT f.id_film as id_film, f.judul AS judul ,f.poster AS poster, f.tahun AS tahun FROM film f, jadwal j where f.id_film = j.id_film AND j.status =1";
 }
 
@@ -51,7 +52,7 @@ $stmt->execute();
 $lisfilm = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $lisfilm = json_encode($lisfilm);
-file_put_contents("film.json", $lisfilm);
+file_put_contents("comingsoon.json", $lisfilm);
 ?>
 <!doctype html>
 <html lang="en">
@@ -82,10 +83,10 @@ file_put_contents("film.json", $lisfilm);
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                <li class="nav-item">
                         <a class="nav-link" href="index.php">Now Showing</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="comingsoon.php">Coming Soon</a>
                     </li>
                     <li class="nav-item">
@@ -108,7 +109,7 @@ file_put_contents("film.json", $lisfilm);
 
         <!--COMING SOON-->
 
-        <h1 class="mt-5 text-light" style="text-align: center;">NOW SHOWING</h1>
+        <h1 class="mt-5 text-light" style="text-align: center;">COMING SOON</h1>
 
         <form method="POST">
 
