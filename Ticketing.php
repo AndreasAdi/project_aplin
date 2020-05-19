@@ -6,29 +6,32 @@
     $stmt->bindValue(':email',$_POST['email'],PDO::PARAM_STR);
     $result=$stmt->execute();
     $data=$stmt->fetch(PDO::FETCH_ASSOC);
-    if($data===false){
-      //login admin
-      if($_POST['email']=="admin@admin.com"){
-          header('Location: admin.php');
-      }
-      else{
-       echo "<script>alert('Email Tidak Terdaftar!')</script>";
-      }
-    }
-    else{
+    if($data){
         $password=$data['Password'];
         $cekpass=password_verify($_POST['password'],$password);
         if($cekpass){
-          session_start();
-          $_SESSION['user']=$data['Nama'];
-          $_SESSION['email']=$data['Email'];
-          $_SESSION['kota']=$data['City'];
-          header("Location: index.php");
+          if($data['role']=='admin'){
+            session_start();
+            $_SESSION['user']=$data['Nama'];
+            $_SESSION['email']=$data['Email'];
+            $_SESSION['kota']=$data['City'];
+            header("Location: admin.php");
+          }
+         else if($data['role']=='user'){
+            session_start();
+            $_SESSION['user']=$data['Nama'];
+            $_SESSION['email']=$data['Email'];
+            $_SESSION['kota']=$data['City'];
+            header("Location: index.php");
+         }
         }
         else{
           echo "<script>alert('Password Salah!')</script>";
-        }
     }
+    }
+    else{
+      echo "<script>alert('Email Tidak Terdaftar!')</script>";
+     }
   }
 ?>
 <!doctype html>
