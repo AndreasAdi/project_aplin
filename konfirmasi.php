@@ -179,20 +179,29 @@
                         </thead>
                         <tbody>
                             <?php 
-                                 foreach ($result as $key => $value) {
-                                $totalsemua = 0;
-                                $ctrdetail=0;
-                            ?>
-                           
-                            <tr>
-                                <td><?php echo $value["Email"];?></td>
-                                <td><?php echo $value["Seat"];?></td>
-                                <td><?php
-                                $totalsemua = $totalsemua + $value['Harga']; 
-                                echo number_format($value["Harga"], 0, ',', '.');?></td>
-                                <td>
-                                <button class='btn btn-primary' data-toggle='modal' data-target='#modal<?php echo$ctrdetail;?>' type='button'>Lihat Snack</button>
-                                <?php
+                            $ctrdetail=0;
+                                foreach ($result as $key => $value) {
+                                    $totalsemua = 0;
+                                    echo"
+                                    <tr>
+                                    <td>$value[Email]</td>
+                                        <td>$value[Seat]</td>
+                                        <td>";
+                                    $totalsemua = $totalsemua + $value['Harga']; 
+                                    echo number_format($value["Harga"], 0, ',', '.')."</td>";
+                                    
+                                    echo"<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modal$ctrdetail' >Lihat Snack</button></td>";
+                                    
+                                    echo "<div class='modal fade' id='modal$ctrdetail' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                    <div class='modal-dialog' role='document'>
+                                        <div class='modal-content'>
+                                        <div class='modal-header'>
+                                            <h5 class='modal-title' id='exampleModalLabel'>Snack Detail</h5>
+                                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                            <span aria-hidden='true'>&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class='modal-body'>";
                                         $grandtotal=0;
                                         $querysnack = "SELECT * FROM header_ordersnack where id_tiket = $value[id_tiket]";
                                         $resultsnack = $db->query($querysnack)->fetch(PDO::FETCH_ASSOC);
@@ -202,28 +211,57 @@
                                             $resultsnack = $db->query($querysnack)->fetchAll(PDO::FETCH_ASSOC);
                                             $total = 0;
                                             foreach ($resultsnack as $keya => $valuea) {
+                                                echo "$valuea[nama_snack] @$valuea[harga_snack] x $valuea[jumlah_snack] = $valuea[totalharga]<br>";
                                                 $total = $total + $valuea['totalharga'];
                                             }
+                                            echo "<b>Sub Total:</b>Rp ".number_format($total, 0, ',', '.');
                                             $totalsemua = $totalsemua + $total;
                                         }
                                         else {
                                             echo "Tidak ada snack";
                                         }
-                                ?>
-                                </td>
-                                <td><?php echo number_format($totalsemua, 0, ',', '.');?></td>
-                                <td><?php if ($value['buktiBayar'] == "-") {
-                                    echo "Belum ada bukti";
+                                        echo"</div>
+                                        <div class='modal-footer'>
+                                            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>";
+                                    echo "<td>".number_format($totalsemua, 0, ',', '.')."</td>";
+                                    echo"
+                                    <td> ";
+                                    if ($value['buktiBayar'] == "-") {
+                                        echo "Belum ada bukti";
+                                    }
+                                    else {
+                                        echo"<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modalbukti$ctrdetail'>Lihat Bukti</button>";
+                                        echo "<div class='modal fade' id='modalbukti$ctrdetail' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                        <div class='modal-dialog' role='document'>
+                                            <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-title' id='exampleModalLabel'>Snack Detail</h5>
+                                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                                <span aria-hidden='true'>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class='modal-body'>";
+                                            echo"<img src='bukti/$value[buktiBayar]' width='300px' height='200px'>";
+                                            echo"</div>
+                                            <div class='modal-footer'>
+                                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>";
+                                       
+                                    } 
+                                    echo"</td>
+                                    <td><button class='btn btn-success' type ='submit' value ='$value[id_tiket]' name ='confirm'>Confirm</button><button class='btn btn-danger' type ='submit' value ='$value[id_tiket]' name ='reject'>Reject</button></td>
+                                    </tr>";
+                                $ctrdetail++;
                                 }
-                                else {
-                                    echo "<img src='bukti/$value[buktiBayar]' width='300px' height='200px'>";
-                                } ?></td>
-                                <td><?php echo"<button class='btn btn-success' type ='submit' value ='$value[id_tiket]' name ='confirm'>Confirm</button><button class='btn btn-danger' type ='submit' value ='$value[id_tiket]' name ='reject'>Reject</button>";?></td>
-                            </tr>
-                            <?php
-                            $ctrdetail++;
-                              }
-                             ?>
+                            ?>
+                            <tr>
                         </tbody>
                     </table>
                 </div>
@@ -244,7 +282,7 @@
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $("table").DataTable();
+            //$("table").DataTable();
         </script>
          <!-- datatable -->
 
